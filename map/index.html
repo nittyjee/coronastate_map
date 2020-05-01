@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- SOURCES-->
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>The CoronaState Project</title>
+		<meta charset="utf-8" />
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="timeline/vendor/jquery-ui-1.10.3.custom/css/ui-darkness/jquery-ui-1.10.3.custom.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="timeline/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="timeline/vendor/jquery.ui.touch-punch.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+		
+		<link href='timeline/index.css' rel='stylesheet' />
+
+		<!-- MODAL -->
+		<link href="modal/modal_styles.css" rel="stylesheet">
+    	<script defer src="modal/modal_script.js"></script>
+
+
+		<!-- TIMELINE FUNCTIONALITY -->
+
+		<script>
+
+			$(document).ready(function () {
+				if (jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+				const today = new Date()
+				const yesterday = new Date(today)
+
+				yesterday.setDate(yesterday.getDate() - 1)
+				//console.log(window.name);
+				var sliderStart = moment("01/25/2020").unix();
+				//var sliderEnd = moment().unix();
+				var sliderEnd = moment(yesterday).unix();
+				console.log("start:", sliderStart);
+				console.log("end:", sliderEnd);
+				var formatComma = d3.format(",");
+
+
+				$("#slider").slider({
+					min: sliderStart,
+					max: sliderEnd,
+					step: 86400, //24 hrs in unix time, set slider step to 1 day=86400 seconds
+					value: sliderEnd,
+					slide: function (event, ui) {
+						$("#date").val(moment.unix(ui.value).format('MM/DD/YYYY'));
+						changeDate(ui.value);
+
+						urlHash = window.location.hash + '/' + ui.value;
+<!--						var large_land = data.filter(function(d) { return d.land_area > 200; });-->
+<!--						console.log(JSON.stringify(large_land));-->
+						// console.log(urlHash);
+						// hash.onMapMove();
+						d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv", function(data) {
+							data2 = data.filter(function(d) { return d.Date == String(moment.unix(ui.value).format('YYYY-MM-DD')) });
+							var active = data2[0].Confirmed - data2[0].Recovered;
+<!--							console.log(active)-->
+							document.getElementById("confirmed_id").innerHTML = formatComma(data2[0].Confirmed);
+							document.getElementById("recovered_id").innerHTML = formatComma(data2[0].Recovered);
+							document.getElementById("deaths_id").innerHTML = formatComma(data2[0].Deaths);
+							document.getElementById("active_id").innerHTML = formatComma(active);
+
+<!--							console.log("UI:",String(moment.unix(ui.value).format('YYYY-MM-DD')));-->
+
+
+					});
+					}
+				});
+
+				$("#date").val(moment.unix($("#slider").slider("value")).format('MM/DD/YYYY'));
+
+				$('.footnote').click(function () {
+				$('#footnotediv').toggle('slide');
+				});
+			});
+		</script>
+
+		<script type="text/javascript">
+			// Google Analytics
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-28801666-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function () {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+
+	</head>
+
+	<body>
+
+
+
+		<!-- MAP STYLE-->
+		
+		<style>
+		
+
+				.map {
+						position: absolute;
+						display:block;
+						/*top: 61px;*/
+						top:80px;
+						bottom: 0;
+						width: 100%;
+						border-top: 2px solid #b0691d;
+
+
+
+					}
+			
+				body {
+					overflow: hidden;
+				}
+				
+				body { margin:0; padding:0; }
+	
+				body * {
+				   -webkit-touch-callout: none;
+					 -webkit-user-select: none;
+						-moz-user-select: none;
+						 -ms-user-select: none;
+							 user-select: none;
+				}
+				
+			</style>
+			
+			
+			<!-- HEADER STYLE-->
+	
+			
+			<style>
+			
+				#header { 
+					position:absolute;
+					top:0;
+					
+					bottom: 80px;
+					
+					width:100%;
+					background: #f5f6f7
+					url(body.png)
+					min-width: 100px;
+
+					text-color: #ffffff;
+					text-shadow: #717c9b 0px 1px 3px;
+					font-size: 1.40em;
+
+				}
+	  
+				#link {
+					color: #000000c2;
+					<!-- Other colors: #e0e0e0 #e6e6dc -->
+			
+				}
+				
+			</style>
+	
+			<!-- HEADER ELEMENTS STYLES-->
+			
+			<style>
+				
+				.header a {
+				  float: left;
+				  color: black;
+				  text-align: center;
+				  padding: 10px;
+				  text-decoration: none;
+				  font-size: 15px; 
+				  line-height: 25px;
+				  border-radius: 4px;
+				  border: solid black;
+				  font-weight: bold;
+				  margin-top: 3px;
+					margin: 3px;
+					font-family: "Arial";
+				}
+	
+	
+	
+				.header a:hover {
+				  background-color: #ddd;
+				  color: black;
+				}
+	
+				.header a.active {
+				  background-color: dodgerblue;
+				  color: white;
+				}
+	
+				.header-right {
+				float: right;
+				margin-top: 13px;
+				margin-left: 50px;
+				margin-right: 9px;
+				}
+
+
+				.headerText {
+					display: inline-block;
+					/*margin-top: 15px;*/
+					margin-top: 12px;
+					repeat-x 50% 0;
+					text-shadow: #717c9b 0px 1px 3px;
+					/*font-size: 1.40em;*/
+					font-size: 1.7em;
+					/*Center*/
+					margin-left: 10em;
+					/*Left*/
+					/*margin-left: 2.2em;*/
+
+					margin-left: 10px;
+					font-family: 'Consolas';
+
+
+				}
+
+				.header a.encyclopedia {
+				background-color: #e8e1da;
+				/* color: white; */
+				}
+
+				/*Override styling for logo link*/
+				.header>a:first-child {
+					border: none;
+					margin: 0;
+					padding: 0;
+				}
+				.header>a:first-child:hover {
+					background-color: inherit;
+				}
+
+				</style>
+
+
+				<!-- EXTERNAL LINK ICON STYLE -->
+
+
+				<style>
+				.img2 {
+					vertical-align: text-top;
+					padding-left: 2px;
+				}
+				</style>
+			
+			<!-------------------->
+			<!--ADD HEADER DIV---->
+			<!-------------------->
+			
+			<div class="header">
+			
+			<!--LOGO-->
+
+				<a href="http://coronastate.org/" class="logo">
+					<img style="padding: 6px 0px 0px 30px; float: left;"
+						src="https://www.redcross.org/content/dam/icons/disasters/virus/Virus-1000x1000-G-RC.png.img.png"
+						height="70" align="middle">
+				</a>
+
+			  
+				<div id="header_text" class="headerText">
+					The CoronaState Project<br><p style="font-size:17px">> All Covid19 Location Data in One Place</p>
+				</div>
+				<!--
+				<i>... All Covid19 locations in one place.</i>
+				-->
+				<div class="header-right">
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal2">Donate</button>
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal">About</button>
+				</div>
+	
+			</div>
+
+			<!------------------------------------->
+			<!--CLICK ON ABOUT, OPEN MODAL DIALOG-->
+			<!------------------------------------->
+
+
+			<div class="modal" id="modal">
+				<div class="modal-header">
+					<div class="title">About</div>
+					<button data-close-button class="close-button">&times;</button>
+				</div>
+				<div class="modal-body">
+					<h1>The CoronaState Project</h1>
+						<p>
+							The coronavirus pandemic is everywhere, but we are having to look everywhere for the data to fight it. The CoronaState Project is an attempt to put all the data in one place, so we can know where the pandemic has spread, how it got there, and where it's going.
+							<br />
+							<br />
+							 The map will help people see where they are in relation to the disease, and be more vigilant in fighting it. This data will be invaluable for epidemiologists in fighting Covid-19 and future diseases and pandemics.
+							<br />
+							<br />
+							 We will always be looking for volunteers.
+							<br />
+							 Contribute to the effort here:
+							<a href="https://github.com/nittyjee/coronastate" target="_blank" rel="nofollow noopener noreferrer">
+								 https://github.com/nittyjee/coronastate
+							</a>
+							<br />
+							<br />
+							 Contact Us: 
+							<a href="mailto:info@coronastate.org">
+								 info@coronastate.org
+							</a>
+						</p>
+						<p>
+							<p><br>
+								We need your help to make this project a reality. Please contribute to our Gofundme Campaign:
+							</p>
+						<h2>
+							<a href="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place" target="_blank">
+								Donate
+							</a>
+						</h2>
+						
+					
+
+				</div>
+			</div>
+
+
+
+			<div class="modal" id="modal2">
+				<div class="modal-header">
+					<div class="title">Donate</div>
+					<button data-close-button class="close-button">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="gfm-embed" data-url="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place/widget/medium"></div>
+					<script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+					<p>
+						The CoronaState Map is already the most thorough and well-visualized map available, and needs some major additions to make it complete. We need graphs to go along with the map, and there are a lot more datasets that need to be processed and added. We need $5000 to establish those components, and the more funding we receive, the further we can go.
+						<br />
+						<br />
+						Tiers of funding:
+						<br />
+						*$5000: Develop basic data visualizations and process comprehensive datasets.
+						<br />
+						*$15,000: Show projections over time, and begin coordinating volunteers to gather and map data at a very local level.
+						<br />
+						*$25,000: Gather data at a very local level, country by country. Further map visualizations of movement and transmission.
+					</p>
+					
+				</div>
+			</div>
+
+			<div id="overlay"></div>
+
+		<!-- MAP DIV-->
+
+		<div id="map" class="map"></div>
+
+		<!-- BASEMAP SWITHER DIV -->
+
+		<div id="styleSwitcher"></div>
+
+		<!-- TIMELINE PANEL DIV -->
+		
+		<div id='sidepanel'>
+		
+			<div id="content">
+				<h1>Coronavirus Timeline</h1>
+				<hr/>
+				<p class="info" style="text-align:center">
+				Show Coronavirus cases on:
+				<br/> +
+				<input type="text" id="date" size="4" class="y2000" value="" /> +
+				</p>
+				<div id="slider"></div>
+				<br>
+				<nav id="legend"></nav>
+				<div>
+				<span class="footnote" id = "footnote_id">
+						<center>
+						<font size="5">
+						Total Confirmed:
+						<br>
+							<font color="red"><p id = "confirmed_id">2,954,106 </p></font>
+						<p>
+						<font size="4">
+						Active: <font color="orange"><p id = "active_id"> 1,934,342 </p></font>
+						<br>
+						Deaths: <font color="pink"><p id = "deaths_id">205,398</p></font>
+						<br>
+							Recovered: <font color="yellow"><p id = "recovered_id">860,875</p></font>
+						</center>
+						</font>
+					</span>
+				</div>
+				</br>
+
+
+
+				<div id="footnotediv" style="display:none">
+
+
+					
+				</div>
+			</div>
+		</div>
+
+		<!-- MAP.JS SOURCE -->
+
+		<script src="timeline/js/map.js"></script>
+
+	</body>
+
+</html>
