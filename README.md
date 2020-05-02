@@ -7,7 +7,8 @@ Changes made
 * Used d3.csv to read csv file
 * Updated the footnotes with ids: confirmed_id, recovered_id, deaths_id, active_id
 * Based on the slider's position, update the html content of the above metrics in comma formatted position
- 
+2. Added a new file display_line.html (5/2/2020)
+* Created a line graph that displays line graph and is synced with all  
 
 
 

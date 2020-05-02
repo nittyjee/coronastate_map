@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+
+Line Graph
+<!--<div id="chart"></div>-->
+<div id="tester" ></div>
+<script>
+    Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv", function(buf){
+    var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
+    for (var i = 0; i < buf.length; i++) {
+      row = buf[i];
+      x_time.push( row['Date'] );
+      y_confirmed.push( row['Confirmed'] );
+      y_recovered.push( row['Recovered'] );
+      y_deaths.push( row['Deaths'] );
+      _temp = row['Confirmed'] - row['Recovered'];
+      y_active.push(_temp);
+    }
+
+    var trace1 = {
+      x: x_time,
+      y: y_confirmed,
+      name:"Confirmed",
+      mode: 'lines',
+      type: 'scatter'
+    };
+
+    var trace2 = {
+      x: x_time,
+      y: y_recovered,
+      name:"Recovered",
+      mode: 'lines',
+      type: 'scatter'
+    };
+    var trace3 = {
+      x: x_time,
+      y: y_active,
+      name:"Active",
+      mode: 'lines',
+      type: 'scatter'
+    };
+
+    var trace4 = {
+      x: x_time,
+      y: y_deaths,
+      name:"Deaths",
+      mode: 'lines',
+      type: 'scatter'
+    };
+
+    var data = [trace1, trace2, trace3, trace4];
+
+    var layout = {
+      yaxis: {
+         tickformat: '.0'
+      },
+      showlegend:false
+    };
+
+    Plotly.newPlot('tester', data, layout,  {displayModeBar: false});
+    } );
+</script>
+
+</body>
+</html>
