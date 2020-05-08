@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High Charts</title>
+    <!-- 1. Add these JavaScript inclusions in the head of your page -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+    <!-- 2. Add the JavaScript to initialize the chart on document ready -->
+		<script type="text/javascript">
+
+		$.get('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv', function(csv) {
+		console.log(csv);
+		  var parseCSV = function(csv) {
+			var lines = csv.split("\n").map(line => line.split(",")) // split string to lines
+			var categories = []
+			var series = [{
+			  name: 'Cases',
+			  data: [],
+<!--			  dataLabels: {-->
+<!--				style: {-->
+<!--				  color: 'green'-->
+<!--				}-->
+<!--			  }-->
+			}]
+				// Parse every line of csv file.
+			lines.forEach((line, i) => {
+			  if (i !== 0) {
+				var cat = line[1];
+				var p1 = parseFloat(line[108]);
+
+				categories.push(cat)
+				series[0].data.push(p1)
+
+			  }
+			})
+			// return the object with categories and series
+			return {
+				categories: categories,
+			  series: series
+			}
+		  }
+
+		  var parsedCSV = parseCSV(csv)
+		options = {
+			 chart: {
+                        type:"bar",
+                        marginLeft: 150
+                    },
+                    title: {
+                        text: 'Confirmed cases by countries'
+                    },
+			xAxis: {
+			  categories: parsedCSV.categories,
+				min:0,
+				max:5,
+				scrollbar: {
+					enabled: true
+				},
+                tickLength: 0
+			},
+			yAxis: {
+			   min: 0,
+               max: 1200000,
+                    title: {
+                        text: 'Cases',
+                        align: 'high'
+                    }
+            },
+
+			plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: parsedCSV.series,
+		  };
+		  Highcharts.chart('container', options);
+
+		});
+
+		</script>
+</head>
+<body>
+<!-- 3. Add the container -->
+		<div id="container" style="height: 400px; min-width: 320px; max-width: 600px; margin: 0 auto"></div>
+</body>
+</html>

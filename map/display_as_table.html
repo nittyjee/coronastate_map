@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>display as table</title>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+        .viewport {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 280px;
+            height: 400px;
+            background-color: #e8e8e8;
+            border: 1px solid #AAAAAA;
+            border-radius: 4px;
+            box-shadow: inset 1px 1px 6px 2px rgba(0,0,0, .25);
+        }
+        .scroll-svg {
+
+        }
+        .longscroll .row {
+            font-family: Arial;
+            font-size: 11px;
+            height: 19px;
+            padding: 0 8px;
+            border-bottom: solid #eee 1px;
+        }
+
+        .information {
+            position: absolute;
+            top: 15px;
+            left: 300px;
+            width: 350px;
+            height: 400px;
+        }
+
+        .info-svg {
+            fill: #2968AA;
+            overflow: visible;
+        }
+
+        .brace {
+            stroke: #2968AA;
+            stroke-width: 2px;
+            fill: none;
+        }
+
+        .infotext {
+            font-size: 20px;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+    <script src="virtualscroller.js"></script>
+</head>
+<body>
+<div class="viewport"></div>
+<!--<div class="information"></div>-->
+<script type="text/javascript">
+    d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+        var unique_dates = d3.nest().key(function(d) { return d.Date;}).entries(data);
+        function getData(datestring) {
+                var data2, buf, trace;
+
+                data2 = data.filter(function(d) { return d.Date.match(datestring); });
+                buf = data2.sort(function(a,b) {
+                                 return d3.descending(+a.Confirmed, +b.Confirmed);
+                });
+                var text_x =[];
+                var state = {
+                label: "label",
+                items:[],
+                };
+                var formatComma = d3.format(",");
+                for (var i = 0; i < buf.length; i++) {
+                  var row = buf[i];
+                  var n = Number(row['Confirmed']);
+                  var string_value = row['Country'].concat(" - ").concat(formatComma(n));
+                  state.items.push({
+                    name:row['Country'],
+                   label: string_value,
+                   id: i
+                  });
+
+                }
+                return [state, buf.length];
+        }
+        var data_set = getData(unique_dates[unique_dates.length-1].key);
+        var states = data_set[0];
+        var row_length = data_set[1];
+        console.log("options",states);
+        var colorScale = d3.scale.category20();
+
+        var scrollSVG = d3.select(".viewport").append("svg")
+            .attr("class", "scroll-svg");
+
+        var defs = scrollSVG.insert("defs", ":first-child");
+
+        createFilters(defs);
+
+        var chartGroup = scrollSVG.append("g")
+            .attr("class", "chartGroup")
+            //.attr("filter", "url(#dropShadow1)"); // sometimes causes issues in chrome
+
+        chartGroup.append("rect")
+            .attr("fill", "#FFFFFF");
+
+<!--        var infoSVG = d3.select(".information").append("svg")-->
+<!--            .attr("class", "info-svg");-->
+
+        var rowEnter = function(rowSelection) {
+            rowSelection.append("rect")
+                .attr("rx", 3)
+                .attr("ry", 3)
+                .attr("width", "250")
+                .attr("height", "24")
+                .attr("fill-opacity", 0.25)
+                .attr("stroke", "#999999")
+                .attr("stroke-width", "2px");
+            rowSelection.append("text")
+                .attr("transform", "translate(10,15)");
+        };
+        var rowUpdate = function(rowSelection) {
+            rowSelection.select("rect")
+                .attr("fill", function(d) {
+                    return colorScale(d.id);
+                });
+            rowSelection.select("text")
+                .text(function (d) {
+                    return (d.index + 1) + ". " + d.label;
+                });
+        };
+
+        var rowExit = function(rowSelection) {
+        };
+
+        var virtualScroller = d3.VirtualScroller()
+            .rowHeight(30)
+            .enter(rowEnter)
+            .update(rowUpdate)
+            .exit(rowExit)
+            .svg(scrollSVG)
+            .totalRows(row_length)
+            .viewport(d3.select(".viewport"));
+
+        // tack on index to each data item for easy to read display
+         // tack on index to each data item for easy to read display
+        states.items.forEach(function(nextState, i) {
+            nextState.index = i;
+        });
+
+        virtualScroller.data(states.items, function(d) { return d.id; });
+
+        chartGroup.call(virtualScroller);
+
+        function createFilters(svgDefs) {
+            var filter = svgDefs.append("svg:filter")
+                .attr("id", "dropShadow1")
+                .attr("x", "0")
+                .attr("y", "0")
+                .attr("width", "200%")
+                .attr("height", "200%");
+
+            filter.append("svg:feOffset")
+                .attr("result", "offOut")
+                .attr("in", "SourceAlpha")
+                .attr("dx", "1")
+                .attr("dy", "1");
+
+            filter.append("svg:feColorMatrix")
+                .attr("result", "matrixOut")
+                .attr("in", "offOut")
+                .attr("type", "matrix")
+                .attr("values", "0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.2 0");
+
+            filter.append("svg:feGaussianBlur")
+                .attr("result", "blurOut")
+                .attr("in", "matrixOut")
+                .attr("stdDeviation", "1");
+
+            filter.append("svg:feBlend")
+                .attr("in", "SourceGraphic")
+                .attr("in2", "blurOut")
+                .attr("mode", "normal");
+        }
+
+    });
+
+</script>
+</body>
+</html>

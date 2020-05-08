@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- SOURCES-->
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>The CoronaState Project</title>
+		<meta charset="utf-8" />
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="timeline/vendor/jquery-ui-1.10.3.custom/css/ui-darkness/jquery-ui-1.10.3.stretched.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="timeline/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="timeline/vendor/jquery.ui.touch-punch.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+		
+		<link href='timeline/index.css' rel='stylesheet' />
+
+		<!-- MODAL -->
+		<link href="modal/modal_styles.css" rel="stylesheet">
+    	<script defer src="modal/modal_script.js"></script>
+
+
+		<!-- TIMELINE FUNCTIONALITY -->
+        <!-- Plotly JS -->
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		
+		<!-- Highcharts JS -->
+		<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+		<script type="text/javascript" src="https://code.highcharts.com/modules/data.js"></script>
+		
+		<!-- D3 JS -->
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+		
+		
+		
+
+
+</script>
+
+		<script type="text/javascript">
+			// Google Analytics
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-28801666-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function () {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+
+	</head>
+
+	<body>
+
+
+
+		<!-- MAP STYLE-->
+		
+		<style>
+		
+
+				.map {
+						position: absolute;
+						display:block;
+						/*top: 61px;*/
+						top:82px;
+						/* bottom: 0; */
+						/* bottom: 35px; */
+						bottom: 100px;
+						/* width: 100%; */
+						
+						/* Standard */
+			            width: calc(100% - 260px);
+				        /* Opera */
+                        width: -o-calc(100% - 260px);
+				        /* Firefox */
+				        width: -moz-calc(100% - 260px);
+				        /* WebKit */
+                        width: -webkit-calc(100% - 260px);
+				
+						/*border-top: 2px solid #b0691d;*/
+
+                        left: 260px;
+
+					}
+			
+				body {
+					overflow: hidden;
+				}
+				
+				body { margin:0; padding:0; }
+	
+				body * {
+				   -webkit-touch-callout: none;
+					 -webkit-user-select: none;
+						-moz-user-select: none;
+						 -ms-user-select: none;
+							 user-select: none;
+				}
+				
+			</style>
+			
+			
+			<!-- INFO STYLE-->
+		
+		    <style>
+			    #info-section {
+			        position: absolute;
+				    display:block;
+			        width: 258px;
+				    left: 0;
+			        top:82px;
+				    /* bottom: 35px; */
+					bottom: 100px;
+				    border-right: 2px solid #b0691d;
+				}
+				
+				#bar-graph-section, #totals-section {
+				    padding-left: 5px;
+					padding-right: 5px;
+				}
+				
+				#bar-graph-section {
+				    width: 250px;
+					
+				}
+				
+				#bar-graph-cont {
+				   height: 200px;
+				}
+
+				
+				.float-right {
+				    float: right;
+				}
+				
+				.info-row-odd, .info-row-even {
+				    width: 100%; height: 23px;
+				}
+				
+				.info-row-odd {
+				    background-color: gainsboro;
+				}
+				
+				#ttl { width: 100%; height: 77px; background-color: #2e3436; margin-top: 2px; padding-top: 25px; }
+			</style>
+			
+			
+			<!-- HEADER STYLE-->
+	
+			
+			<style>
+			
+				#header { 
+					position:absolute;
+					top:0;
+					
+					bottom: 80px;
+					
+					width:100%;
+					background: #f5f6f7
+					url(body.png)
+					min-width: 100px;
+
+					text-color: #ffffff;
+					text-shadow: #717c9b 0px 1px 3px;
+					font-size: 1.40em;
+                    
+				}
+	  
+				#link {
+					color: #000000c2;
+					<!-- Other colors: #e0e0e0 #e6e6dc -->
+			
+				}
+				
+				.header {
+				    height: 80px;
+				    border-bottom: 2px solid #b0691d;
+				}
+				
+				
+			</style>
+	
+			<!-- HEADER ELEMENTS STYLES-->
+			
+			<style>
+				
+				img#logo-icon {
+				    padding: 6px 0px 0px 30px; float: left;
+					height: 70px;
+				}
+				
+				.header a {
+				  float: left;
+				  color: black;
+				  text-align: center;
+				  padding: 10px;
+				  text-decoration: none;
+				  font-size: 15px; 
+				  line-height: 25px;
+				  border-radius: 4px;
+				  border: solid black;
+				  font-weight: bold;
+				  margin-top: 3px;
+					margin: 3px;
+					font-family: "Arial";
+				}
+	
+				.header a:hover {
+				  background-color: #ddd;
+				  color: black;
+				}
+	
+				.header a.active {
+				  background-color: dodgerblue;
+				  color: white;
+				}
+	
+				.header-right {
+				float: right;
+				margin-top: 13px;
+				margin-left: 50px;
+				margin-right: 9px;
+				}
+
+
+				.headerText {
+					display: inline-block;
+					/*margin-top: 15px;*/
+					margin-top: 12px;
+					repeat-x 50% 0;
+					text-shadow: #717c9b 0px 1px 3px;
+					/*font-size: 1.40em;*/
+					font-size: 1.7em;
+					/*Center*/
+					margin-left: 10em;
+					/*Left*/
+					/*margin-left: 2.2em;*/
+
+					margin-left: 10px;
+					font-family: 'Consolas';
+				}
+				
+				.headerSubText {
+				    font-size:17px;
+				}
+
+				.header a.encyclopedia {
+				background-color: #e8e1da;
+				/* color: white; */
+				}
+
+				/*Override styling for logo link*/
+				.header>a:first-child {
+					border: none;
+					margin: 0;
+					padding: 0;
+				}
+				.header>a:first-child:hover {
+					background-color: inherit;
+				}
+
+				</style>
+
+
+        <!-- ADAPTIVE STYLE-->
+	
+			
+			<style>
+                @media (max-width: 730px) {
+				    .header {
+				        height: 50px;
+					}
+					img#logo-icon {
+					    height: 40px;
+						padding-left: 11px;
+					}
+					.headerText {
+					    margin-top: 5px;
+                        font-size: 1em;
+					}
+					.headerSubText {
+				        font-size:11px;
+				    }
+					.header-right {
+				        margin-top: 2px;
+				        margin-left: 1px;
+				        margin-right: 5px;
+				    }
+					.button {
+					    padding: 5px;
+					}
+					#info-section {
+					    top:52px;
+						/*height: 100px;*/
+					    height: 194px;
+						width: 100%;
+						border-bottom: 2px solid #b0691d;
+						display: flex;
+						display: -webkit-flex; 
+						justify-content: space-between;
+                    }
+                    .map {
+					    /*top: 152px;*/
+						top: 248px;
+						left: 0; 
+						width: 100%;
+					}					
+					#totals-section > h3 { display: none; }
+					#totals-section {
+					   padding-left: 0;
+					   padding-right: 0; 
+					   width: 170px;
+					}
+					#bar-graph-cont {
+				       height: 194px;
+			        }
+					#time-slider-plot {
+					   display: none;
+					}
+					#ttl { margin-top: 0px; }
+				}
+				
+				@media (max-width: 450px) {
+				    .headerText {
+					    display: none;
+					}
+				}
+				
+				
+				
+		    </style>
+
+        <!-- FOOTER STYLE-->
+	
+			
+			<style>
+			
+				#footer { 
+					position:absolute;
+					
+					bottom: 0px;
+					
+					width:100%;
+					/* height: 35px; */
+					height: 100px;
+					background: #f5f6f7
+					min-width: 100px;
+
+					border-top: 2px solid #b0691d;
+					
+					font-size: 15px;
+                    padding-left: 10px;
+					padding-right: 10px;
+				}
+				
+				#slider {
+				    top: 8px;
+				}
+				
+				
+			</style>
+
+
+				<!-- EXTERNAL LINK ICON STYLE -->
+
+
+				<style>
+				.img2 {
+					vertical-align: text-top;
+					padding-left: 2px;
+				}
+				</style>
+			
+			<!-------------------->
+			<!--ADD HEADER DIV---->
+			<!-------------------->
+			
+			<div class="header">
+			
+			<!--LOGO-->
+
+				<a href="http://coronastate.org/" class="logo">
+					<img id="logo-icon"
+						src="https://www.redcross.org/content/dam/icons/disasters/virus/Virus-1000x1000-G-RC.png.img.png"
+					    align="middle">
+				</a>
+
+			  
+				<div id="header_text" class="headerText">
+					The CoronaState Project<br><p class="headerSubText">&gt; All Covid19 Location Data in One Place</p>
+				</div>
+				<!--
+				<i>... All Covid19 locations in one place.</i>
+				-->
+				<div class="header-right">
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal2">Donate</button>
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal">About</button>
+				</div>
+	
+			</div>
+
+			<!------------------------------------->
+			<!--CLICK ON ABOUT, OPEN MODAL DIALOG-->
+			<!------------------------------------->
+
+
+			<div class="modal" id="modal">
+				<div class="modal-header">
+					<div class="title">About</div>
+					<button data-close-button class="close-button">&times;</button>
+				</div>
+				<div class="modal-body">
+					<h1>The CoronaState Project</h1>
+						<p>
+							The coronavirus pandemic is everywhere, but we are having to look everywhere for the data to fight it. The CoronaState Project is an attempt to put all the data in one place, so we can know where the pandemic has spread, how it got there, and where it's going.
+							<br />
+							<br />
+							 The map will help people see where they are in relation to the disease, and be more vigilant in fighting it. This data will be invaluable for epidemiologists in fighting Covid-19 and future diseases and pandemics.
+							<br />
+							<br />
+							 We will always be looking for volunteers.
+							<br />
+							 Contribute to the effort here:
+							<a href="https://github.com/nittyjee/coronastate" target="_blank" rel="nofollow noopener noreferrer">
+								 https://github.com/nittyjee/coronastate
+							</a>
+							<br />
+							<br />
+							 Contact Us: 
+							<a href="mailto:info@coronastate.org">
+								 info@coronastate.org
+							</a>
+						</p>
+						<p>
+							<p><br>
+								We need your help to make this project a reality. Please contribute to our Gofundme Campaign:
+							</p>
+						<h2>
+							<a href="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place" target="_blank">
+								Donate
+							</a>
+						</h2>
+						
+					
+
+				</div>
+			</div>
+
+
+
+			<div class="modal" id="modal2">
+				<div class="modal-header">
+					<div class="title">Donate</div>
+					<button data-close-button class="close-button">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="gfm-embed" data-url="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place/widget/medium"></div>
+					<script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+					<p>
+						The CoronaState Map is already the most thorough and well-visualized map available, and needs some major additions to make it complete. We need graphs to go along with the map, and there are a lot more datasets that need to be processed and added. We need $5000 to establish those components, and the more funding we receive, the further we can go.
+						<br />
+						<br />
+						Tiers of funding:
+						<br />
+						*$5000: Develop basic data visualizations and process comprehensive datasets.
+						<br />
+						*$15,000: Show projections over time, and begin coordinating volunteers to gather and map data at a very local level.
+						<br />
+						*$25,000: Gather data at a very local level, country by country. Further map visualizations of movement and transmission.
+					</p>
+					
+				</div>
+			</div>
+
+			<div id="overlay"></div>
+
+		<!-- MAP DIV-->
+
+		<div id="map" class="map"></div>
+
+		<!-- BASEMAP SWITHER DIV -->
+		<div id="styleSwitcher"></div>
+
+        <!-- INFO PANEL DIV -->
+		
+		<div id='info-section'>
+		     
+			<div id='totals-section'>
+			    <div id="ttl">
+				    <center>
+					        <font color="white" size="3">Total Confirmed</font><br>
+					        <font color="red" size="5" id="confirmed_id">2,954,106 </font>
+					</center>
+				</div>
+				<div class="info-row-even"><b>Cases on:</b> <input type="text" id="date" class="float-right" style="color: navy;" value="" /></div>
+				<div class="info-row-odd"><b>Active:</b> <font color="darkorange" id="active_id" class="float-right"> 1,934,342 </font></div>
+				<div class="info-row-even"><b>Deaths:</b> <font color="maroon" id="deaths_id" class="float-right">205,398</font></div>
+				<div class="info-row-odd"><b>Recovered:</b> <font color="darkgreen" id="recovered_id" class="float-right">860,875</font></div>
+
+			</div>
+			
+			
+			<div id='bar-graph-section'>
+			    <div id="bar-graph-cont"></div>
+				<div id="time-slider-plot" ></div>
+			</div>
+			
+			
+			
+		</div>
+
+
+		<!-- TIMELINE PANEL DIV -->
+		
+		
+		
+		<!-------------------->
+		<!--ADD FOOTER DIV---->
+		<!-------------------->
+			
+		<div id="footer">
+		
+			<!-- TIMELINE slider DIV -->
+		   <div id="slider"></div>
+
+		
+		</div>
+		
+<script type="text/javascript">
+
+ // Highcharts global variables
+ var data_set = {};
+ var unique_dates = [];
+ var load_data = [];
+ var barGraph;
+
+
+			    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				// ================================================================================
+				// -------------------------------  Plotly  ---------------------------------------
+				// ================================================================================
+				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+				// Plotly global variables
+				var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
+var ind = 0;
+var graphDiv = document.getElementById('time-slider-plot');
+var currdate = [];
+var formatComma = d3.format(",");
+
+	
+
+
+Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv", function(buf){
+    
+    for (var i = 0; i < buf.length; i++) {
+      var row = buf[i];
+      x_time.push( row['Date'] );
+      y_confirmed.push( row['Confirmed'] );
+      y_recovered.push( row['Recovered'] );
+      y_deaths.push( row['Deaths'] );
+      var _temp = row['Confirmed'] - row['Recovered'];
+      y_active.push(_temp);
+    }
+
+
+var trace1 = {
+      x: x_time,
+      y: y_confirmed,
+      name:"Confirmed",
+      mode: 'lines',
+      type: 'scatter',
+	  line: {
+        color: 'red',
+        width: 3
+      },
+	  hoverinfo: 'skip'//,
+	  //hovertemplate: "%{y:,}",
+    };
+
+    var trace2 = {
+      x: x_time,
+      y: y_recovered,
+      name:"Recovered",
+      mode: 'lines',
+      type: 'scatter',
+	  line: {
+        color: 'darkgreen',
+        width: 2
+      },
+	  hoverinfo: 'skip'
+      //hovertemplate: "%{y:,}"
+    };
+    var trace3 = {
+      x: x_time,
+      y: y_active,
+      name:"Active",
+      mode: 'lines',
+      type: 'scatter',
+	  line: {
+        color: 'darkorange',
+        width: 2
+      },
+	  hoverinfo: 'skip'
+      //hovertemplate: "%{y:,}"
+    };
+
+    var trace4 = {
+      x: x_time,
+      y: y_deaths,
+      name:"Deaths",
+      mode: 'lines',
+      type: 'scatter',
+	  line: {
+        color: 'maroon',
+        width: 2
+      },
+	  hoverinfo: 'skip'
+      //hovertemplate: "%{y:,}"
+    };
+
+    var data = [trace1, trace2, trace3, trace4];
+
+    var layout = {
+	  //dragmode: 'turntable',
+      height: 100,
+	  margin: {
+        l: 25,
+        r: 25,
+        b: 20,
+        t: 0,
+        pad: 0
+      },
+      xaxis:{
+        showspikes: false,//true,
+		spikecolor: 'slateblue',
+        spikemode: 'across',
+        spikedash: 'solid',
+        spikesnap: 'cursor',
+		spikethickness: 5,
+        showline:true,
+        showgrid:true,
+		showticklabels: true,
+        tickfont: {
+            family: 'Old Standard TT, serif',
+            size: 13,
+            color: 'black'
+        },
+		fixedrange: true
+      },
+      yaxis: {
+	     fixedrange: true,
+		 showticklabels: true
+         //tickformat: '.0'
+      },
+      showlegend:false,
+      hovermode: 'x unified', // 'closest'
+	  
+	  shapes: [{
+        type: 'line',
+        line: {
+           color: 'black',
+           width: 5
+        },
+        xref: 'x',
+        yref: 'paper',
+        x0: x_time[x_time.length-1],//'2020-02-13',
+        y0: 0,
+        x1: x_time[x_time.length-1],//'2020-02-13',
+        y1: 1,
+        opacity: 1
+     }]
+    };
+	
+	
+	Plotly.newPlot(graphDiv, data, layout,  {displayModeBar: false});
+    
+	
+     //   changeDate(moment(x_time[x_time.length-1]).unix());
+    $("#date").val(x_time[x_time.length-1]);
+	                        document.getElementById("confirmed_id").innerHTML = formatComma(y_confirmed[x_time.length-1]);
+							document.getElementById("recovered_id").innerHTML = formatComma(y_recovered[x_time.length-1]);
+							document.getElementById("deaths_id").innerHTML = formatComma(y_deaths[x_time.length-1]);
+							document.getElementById("active_id").innerHTML = formatComma(y_active[x_time.length-1]);
+    
+	setTimeout(function(){
+        changeDate(moment(x_time[x_time.length-1]).unix());
+    }, 1500);
+	
+
+                var sliderStart = 0;
+
+				var sliderEnd = x_time.length-1;
+				
+
+
+				$("#slider").slider({
+					min: sliderStart,
+					max: sliderEnd,
+					step: 1, //24 hrs in unix time, set slider step to 1 day=86400 seconds
+					value: sliderEnd,
+					slide: function (event, ui) {
+						//console.log(ui.value);
+						ind = ui.value;
+						
+						currdate = x_time[ind];
+	  
+      console.log(currdate);
+		
+		var update = {
+           shapes: [{
+		    type: 'line',
+            line: {
+              color: 'black',
+              width: 5
+            },
+            xref: 'x',
+            yref: 'paper',
+            x0: currdate,
+            y0: 0,
+            x1: currdate,
+            y1: 1,
+            opacity: 1
+		   }]
+        };
+        Plotly.relayout(graphDiv, update);
+		
+		changeDate(moment(currdate).unix());
+		
+		
+		
+		
+		
+		
+		$("#date").val(currdate);
+		
+		                    ind = 0;
+							for (var i = 0; i < x_time.length; i++) {
+							    if(x_time[i] == currdate)
+                                    ind = i;
+                            }
+							
+		                    document.getElementById("confirmed_id").innerHTML = formatComma(y_confirmed[ind]);
+							document.getElementById("recovered_id").innerHTML = formatComma(y_recovered[ind]);
+							document.getElementById("deaths_id").innerHTML = formatComma(y_deaths[ind]);
+							document.getElementById("active_id").innerHTML = formatComma(y_active[ind]);
+							
+		    data_set = getData(unique_dates[ind].key)
+            //console.log(data_set);
+            //Highcharts.chart('bar-graph-cont', data_set);
+			
+			barGraph.series[0].update({
+		        data: data_set.series[0].data
+		    }, false);
+		
+		    barGraph.redraw();
+			
+			data_set = {};
+						
+						
+					}
+				});
+
+
+
+} );
+
+
+
+                // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				// ================================================================================
+				// -----------------------------  Highcharts  -------------------------------------
+				// ================================================================================
+				// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ 
+		d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+            // date is filtered below
+            unique_dates = d3.nest().key(function(d) { return d.Date;}).entries(data);
+            //console.log(data);
+			load_data = data;
+			
+            //console.log(unique_dates.length);
+
+            
+            data_set = getData(unique_dates[unique_dates.length-1].key)
+            //console.log(data_set.series[0].data);
+            barGraph = Highcharts.chart('bar-graph-cont', data_set);
+			data_set = {};
+			
+			console.log(barGraph.options.series[0].data);
+    } );
+ 
+ 
+ function getData(datestring) {
+                var data2, buf, trace;
+
+                data2 = load_data.filter(function(d) { return d.Date.match(datestring); });
+                //console.log(data2);
+                buf = data2.sort(function(a,b) {
+                                 return d3.descending(+a.Confirmed, +b.Confirmed);
+                });
+
+        <!--        Add all countries-->
+				var categories = [];
+                var options = {
+                    chart: {
+                        type:"bar",
+                        marginLeft: 70
+                    },
+                    title: {
+                        //text: 'Confirmed Cases'
+						text: null
+                    },
+                 xAxis: {
+                 	categories:[],
+                    //type: 'category',
+                    title: {
+                        text: null
+                    },
+                    min: 0,
+                    max: 8,
+                    scrollbar: {
+                        enabled: true
+                    },
+                    tickLength: 0
+                },
+                yAxis: {
+<!--                    min: 0,-->
+<!--                    max: 1200000,-->
+                    title: {
+                        text: '',
+                        align: 'high'
+                    }
+                },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                    name:"Cases",
+                    data:[]
+                    }]
+                };
+
+                for (var i = 0; i < buf.length; i++) {
+                  var row = buf[i];
+                  options.xAxis.categories.push(row['Country']);
+                  options.series[0].data.push(Number(row['Confirmed']));
+
+
+                }
+
+                return options;
+            }
+ 
+ 
+ $(document).ready(function () {
+				if (jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+
+				
+
+
+
+			});
+			
+			
+		</script>
+ 
+ 
+ 
+		</script>
+
+
+		<!-- MAP.JS SOURCE -->
+
+		<script src="timeline/js/map.js"></script>
+
+	</body>
+
+</html>

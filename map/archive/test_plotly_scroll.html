@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+<body>
+<style>
+    section{
+   max-width: 700px;
+   border: 4px solid black;
+}
+
+#myDiv{
+   max-width: 100%;
+}
+
+svg{
+   max-width: 600px;
+}
+</style>
+<section>
+<div id="myDiv"></div>
+</section>
+<script>
+var xValue = ['Product A', 'Product B'];
+
+var yValue = [20, 14];
+
+var trace1 = {
+  x: xValue,
+  y: yValue,
+  type: 'bar',
+  text: yValue,
+  textposition: 'auto',
+  hoverinfo: 'none',
+  width: 2,
+  offset: [0, 2],
+  marker: {
+    color: 'rgb(158,202,225)',
+    opacity: 0.6,
+    line: {
+      color: 'rbg(8,48,107)',
+    }
+  }
+
+};
+
+var data = [trace1];
+
+var layout = {
+  title: 'January 2013 Sales Report',
+
+};
+
+Plotly.newPlot('myDiv', data, layout, {showSendToCloud:true});
+
+</script>
+</body>
+</html>

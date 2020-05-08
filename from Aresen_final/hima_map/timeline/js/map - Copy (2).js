@@ -86,32 +86,19 @@ function changeDate(unixDate) {
 
     map.setFilter("covid_country_boundaries-dqpfoq", dateFilter);
 
-//    map.setFilter("adm0_test", dateFilter);
-//
-//    map.setFilter("static_adm1_test", dateFilter);
-//
-//    map.setFilter("adm1_bunch1_test", dateFilter);
-//
-//    map.setFilter("adm1_bunch2_test", dateFilter);
-//
-//    map.setFilter("adm2_test", dateFilter);
-//
-//    map.setFilter("adm2_test_closer", dateFilter);
-//
-//    map.setFilter("adm3-1aj9ap", dateFilter);
-    map.setFilter("adm0_test", dateFilter);
+    map.setFilter("adm0-dqltk1", dateFilter);
 
-    map.setFilter("static_adm1_test", dateFilter);
+    map.setFilter("adm_bunch1_static-3gzhmp", dateFilter);
 
-    map.setFilter("adm1_bunch1_test", dateFilter);
+    map.setFilter("adm_bunch1-32h0e5", dateFilter);
 
-    map.setFilter("adm1_bunch2_test", dateFilter);
+    map.setFilter("adm_bunch2-8933or", dateFilter);
 
-    map.setFilter("adm2_test", dateFilter);
+    map.setFilter("adm2-dztfok", dateFilter);
 
-    map.setFilter("adm2_test_closer", dateFilter);
+    map.setFilter("adm2-dztfok_closer", dateFilter);
 
-    map.setFilter("adm3_test", dateFilter);
+    map.setFilter("adm3-1aj9ap", dateFilter);
 
 
 
@@ -268,19 +255,19 @@ function addLayers(yr, date) {
 
 
 /*
-        adm1_bunch1_test
+        adm_bunch1-32h0e5
         coronastate.9arukfsn
         
-        adm1_bunch2_test
+        adm_bunch2-8933or
         coronastate.a1pvmzx6
 
-        adm0_test
+        adm0-dqltk1
         coronastate.5xiae6ck
 
         adm3-1aj9ap
         coronastate.3dagq4o4
 
-        adm2_test
+        adm2-dztfok
         coronastate.6ftdltc9
 
 
@@ -293,14 +280,14 @@ function addLayers(yr, date) {
 
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm0_test",
+            id: "adm0-dqltk1",
             type: "circle",
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.adm0-test"
+                url: "mapbox://coronastate.5xiae6ck"
             },
-            "source-layer": "adm0_test",
+            "source-layer": "adm0-dqltk1",
             paint: {
 
 
@@ -381,16 +368,16 @@ function addLayers(yr, date) {
         //Layer 1: Static Time, Faint
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "static_adm1_test",
+            id: "adm_bunch1_static-3gzhmp",
             type: "circle",
             minzoom: 1.5,
             maxzoom: 1.99,
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.static_adm1-test"
+                url: "mapbox://coronastate.b5vhktgv"
             },
-            "source-layer": "static_adm1_test",
+            "source-layer": "adm_bunch1_static-3gzhmp",
             paint: {
                 "circle-radius": {
                     type: "exponential",
@@ -425,15 +412,15 @@ function addLayers(yr, date) {
         //Admin 1 Bunch 1 (less dense)
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm1_bunch1_test",
+            id: "adm_bunch1-32h0e5",
             type: "circle",
             minzoom: 2.0,
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.adm1_bunch1-test"
+                url: "mapbox://coronastate.9arukfsn"
             },
-            "source-layer": "adm1_bunch1_test",
+            "source-layer": "adm_bunch1-32h0e5",
             paint: {
                 "circle-radius": {
                     type: "exponential",
@@ -480,14 +467,14 @@ function addLayers(yr, date) {
         //Admin 1 Bunch 2 (more dense)
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm1_bunch2_test",
+            id: "adm_bunch2-8933or",
             type: "circle",
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.adm1_bunch2-test"
+                url: "mapbox://coronastate.a1pvmzx6"
             },
-            "source-layer": "adm1_bunch2_test",
+            "source-layer": "adm_bunch2-8933or",
             paint: {
 
 
@@ -539,16 +526,16 @@ function addLayers(yr, date) {
 
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm2_test",
+            id: "adm2-dztfok",
             type: "circle",
             minzoom: 4.5,
             maxzoom: 5.499,
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.adm2-test"
+                url: "mapbox://coronastate.6ftdltc9"
             },
-            "source-layer": "adm2_test",
+            "source-layer": "adm2-dztfok",
             paint: {
 
 
@@ -584,15 +571,15 @@ function addLayers(yr, date) {
 
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm2_test_closer",
+            id: "adm2-dztfok_closer",
             type: "circle",
             minzoom: 5.5,
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.adm2-test"
+                url: "mapbox://coronastate.6ftdltc9"
             },
-            "source-layer": "adm2_test",
+            "source-layer": "adm2-dztfok",
             paint: {
 
 
@@ -722,7 +709,7 @@ function addLayers(yr, date) {
         ////////
 
         //ADM0 CLICK POPUP
-        map.on('click', 'adm0_test', function(e) {
+        map.on('click', 'adm0-dqltk1', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var description = e.features[0].properties.description;
 
@@ -752,12 +739,12 @@ function addLayers(yr, date) {
         //CURSOR ON HOVER
 
         //ON HOVER
-        map.on('mouseenter', 'adm0_test', function() {
+        map.on('mouseenter', 'adm0-dqltk1', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
 
         //OFF HOVER
-        map.on('mouseleave', 'adm0_test', function() {
+        map.on('mouseleave', 'adm0-dqltk1', function() {
             map.getCanvas().style.cursor = '';
         });
 
@@ -770,7 +757,7 @@ function addLayers(yr, date) {
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'adm0_test', function(e) {
+        map.on('mouseenter', 'adm0-dqltk1', function(e) {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -796,7 +783,7 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm0_test', function() {
+        map.on('mouseleave', 'adm0-dqltk1', function() {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
@@ -808,7 +795,7 @@ function addLayers(yr, date) {
         ////////
 
         //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm1_bunch1_test', function(e) {
+        map.on('click', 'adm_bunch1-32h0e5', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var description = e.features[0].properties.description;
 
@@ -840,12 +827,12 @@ function addLayers(yr, date) {
         //CURSOR ON HOVER
 
         //ON HOVER
-        map.on('mouseenter', 'adm1_bunch1_test', function() {
+        map.on('mouseenter', 'adm_bunch1-32h0e5', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
 
         //OFF HOVER
-        map.on('mouseleave', 'adm1_bunch1_test', function() {
+        map.on('mouseleave', 'adm_bunch1-32h0e5', function() {
             map.getCanvas().style.cursor = '';
         });
 
@@ -858,7 +845,7 @@ function addLayers(yr, date) {
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'adm1_bunch1_test', function(e) {
+        map.on('mouseenter', 'adm_bunch1-32h0e5', function(e) {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -884,7 +871,7 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm1_bunch1_test', function() {
+        map.on('mouseleave', 'adm_bunch1-32h0e5', function() {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
@@ -896,7 +883,7 @@ function addLayers(yr, date) {
         ////////
 
         //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm1_bunch2_test', function(e) {
+        map.on('click', 'adm_bunch2-8933or', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var description = e.features[0].properties.description;
 
@@ -928,12 +915,12 @@ function addLayers(yr, date) {
         //CURSOR ON HOVER
 
         //ON HOVER
-        map.on('mouseenter', 'adm1_bunch2_test', function() {
+        map.on('mouseenter', 'adm_bunch2-8933or', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
 
         //OFF HOVER
-        map.on('mouseleave', 'adm1_bunch2_test', function() {
+        map.on('mouseleave', 'adm_bunch2-8933or', function() {
             map.getCanvas().style.cursor = '';
         });
 
@@ -946,7 +933,7 @@ function addLayers(yr, date) {
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'adm1_bunch2_test', function(e) {
+        map.on('mouseenter', 'adm_bunch2-8933or', function(e) {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -972,7 +959,7 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm1_bunch2_test', function() {
+        map.on('mouseleave', 'adm_bunch2-8933or', function() {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
@@ -984,7 +971,7 @@ function addLayers(yr, date) {
         ////////
 
         //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm2_test', function(e) {
+        map.on('click', 'adm2-dztfok', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var description = e.features[0].properties.description;
 
@@ -1018,12 +1005,12 @@ function addLayers(yr, date) {
         //CURSOR ON HOVER
 
         //ON HOVER
-        map.on('mouseenter', 'adm2_test', function() {
+        map.on('mouseenter', 'adm2-dztfok', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
 
         //OFF HOVER
-        map.on('mouseleave', 'adm2_test', function() {
+        map.on('mouseleave', 'adm2-dztfok', function() {
             map.getCanvas().style.cursor = '';
         });
 
@@ -1036,7 +1023,7 @@ function addLayers(yr, date) {
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'adm2_test', function(e) {
+        map.on('mouseenter', 'adm2-dztfok', function(e) {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -1062,7 +1049,7 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm2_test', function() {
+        map.on('mouseleave', 'adm2-dztfok', function() {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
@@ -1074,7 +1061,7 @@ function addLayers(yr, date) {
         ////////
 
         //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm2_test_closer', function(e) {
+        map.on('click', 'adm2-dztfok_closer', function(e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             var description = e.features[0].properties.description;
 
@@ -1108,12 +1095,12 @@ function addLayers(yr, date) {
         //CURSOR ON HOVER
 
         //ON HOVER
-        map.on('mouseenter', 'adm2_test_closer', function() {
+        map.on('mouseenter', 'adm2-dztfok_closer', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
 
         //OFF HOVER
-        map.on('mouseleave', 'adm2_test_closer', function() {
+        map.on('mouseleave', 'adm2-dztfok_closer', function() {
             map.getCanvas().style.cursor = '';
         });
 
@@ -1126,7 +1113,7 @@ function addLayers(yr, date) {
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'adm2_test_closer', function(e) {
+        map.on('mouseenter', 'adm2-dztfok_closer', function(e) {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -1152,7 +1139,7 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm2_test_closer', function() {
+        map.on('mouseleave', 'adm2-dztfok_closer', function() {
             map.getCanvas().style.cursor = '';
             popup.remove();
 		});

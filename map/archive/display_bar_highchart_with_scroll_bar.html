@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High Charts</title>
+    <!-- 1. Add these JavaScript inclusions in the head of your page -->
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+	<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+		<script type="text/javascript" src="https://code.highcharts.com/modules/data.js"></script>
+         <script src="https://d3js.org/d3.v3.min.js"></script>
+
+    <!-- 2. Add the JavaScript to initialize the chart on document ready -->
+
+</head>
+<body>
+
+<section>
+
+    <div style="max-height:450px; max-width:300px",>
+<div id="container"></div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+		d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+            // date is filtered below
+            var unique_dates = d3.nest().key(function(d) { return d.Date;}).entries(data);
+
+            function fill(N, func) {
+              var empty = Array.apply(null, Array(N));
+              return empty.map(func);
+            }
+            //console.log(unique_dates.length);
+
+            function getData(datestring) {
+                var data2, buf, trace;
+
+                data2 = data.filter(function(d) { return d.Date.match(datestring); });
+                //console.log(data2);
+                buf = data2.sort(function(a,b) {
+                                 return d3.descending(+a.Confirmed, +b.Confirmed);
+                });
+                var max_confirmed = Math.max.apply(Math, data2.map(function(o) { return o.Confirmed; }));
+        <!--        Add all countries-->
+				var categories = [];
+                var options = {
+                    chart: {
+                        type:"bar",
+                        marginLeft: 150
+                    },
+                    title: {
+                        text: 'Number of Confirmed Cases'
+                    },
+                 xAxis: {
+                 	categories:[],
+                    //type: 'category',
+                    title: {
+                        text: null
+                    },
+                    min: 0,
+                    max: 8,
+                    scrollbar: {
+                        enabled: true
+                    },
+                    tickLength: 0
+                },
+                yAxis: {
+                        min: 0,
+                    max: max_confirmed,
+                    title: {
+                        text: '',
+                        align: 'high'
+                    }
+                },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                    name:"Cases",
+                    data:[]
+                    }]
+                };
+
+                for (var i = 0; i < buf.length; i++) {
+                  var row = buf[i];
+                  options.xAxis.categories.push(row['Country']);
+                  options.series[0].data.push(Number(row['Confirmed']));
+                }
+                return options;
+            }
+            var data_set = getData(unique_dates[unique_dates.length-1].key)
+            console.log("options",data_set);
+            Highcharts.chart('container', data_set);
+
+
+
+    } );
+
+
+
+
+		</script>
+</body>
+</html>

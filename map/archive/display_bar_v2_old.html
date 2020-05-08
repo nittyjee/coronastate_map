@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<!--Just show the bar chart with sliders-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<style>
+    section{
+   max-width: 300px;
+   max-height: 700px;
+   border: 4px solid black;
+}
+
+#myDiv{
+   max-width: 100%;
+}
+
+svg{
+   max-width: 300px;
+   max-height: 650px;
+}
+</style>
+Confirmed Cases
+<section>
+<div id="myDiv"></div>
+</section>
+
+
+<!--<div id="chart"></div>-->
+<!-- <div style="height:600px; width:300px; overflow-y:scroll;position:relative ">-->
+<!--  <div id="tester" >&lt;!&ndash; Plotly chart will be drawn inside this DIV &ndash;&gt;</div>-->
+<!--    </div>-->
+
+<script>
+    var comma_format = Plotly.d3.format(",");
+    Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+// date is filtered below
+    var unique_dates = Plotly.d3.nest().key(function(d) { return d.Date;}).entries(data);
+
+    function fill(N, func) {
+      var empty = Array.apply(null, Array(N));
+      return empty.map(func);
+    }
+    //console.log(unique_dates.length);
+
+    function getData(datestring) {
+        var data2, buf, trace;
+
+        data2 = data.filter(function(d) { return d.Date.match(datestring); });
+        console.log(data2);
+        buf = data2.sort(function(a,b) {
+                         return Plotly.d3.descending(+a.Confirmed, +b.Confirmed);
+        });
+        var x_country = [], y_confirmed = [], text_x=[], width_x=[], offset_x=[];
+<!--        Add all countries-->
+        for (var i = 0; i < buf.length; i++) {
+          var row = buf[i];
+          console.log(row['Country']);
+          x_country.push( row['Country'] );
+          y_confirmed.push( row['Confirmed'] );
+          text_x.push(comma_format(row['Confirmed']));
+          width_x.push(0.75);
+          offset_x.push(2.75*(i));
+
+        }
+        console.log(x_country);
+        console.log(y_confirmed);
+        trace = {
+            type: 'bar',
+            y: x_country,
+            x: y_confirmed,
+
+<!--            width: 2,-->
+<!--            offset: [0, 2],-->
+
+            orientation: 'h',
+            text: text_x,
+            hovertext:text_x,
+            textposition: 'auto',
+           hoverinfo: 'x',
+            width: width_x,
+    //        offset: offset_x,
+
+        };
+
+        return trace;
+    }
+  var data = [getData(unique_dates[unique_dates.length-1].key)];
+// Hima: To do: Range needs to be from data
+
+  var layout = {
+
+    //autosize: true,
+    //width: 300,
+
+        xaxis:{
+          side:'left',
+          hoverformat: ",",
+<!--          range:[0, 1500000],-->
+<!--          fixedrange: true-->
+        },
+        yaxis:{
+            range:[0, 1],
+            type:"category",
+            showgrid:false,
+            ticks:'outside',
+            //tickson:"boundaries",
+            ticklen:10,
+            //showticklabels:false,
+            autorange:'reversed',
+<!--            fixedrange: true-->
+        },
+        uniformtext_minsize:8,
+         uniformtext_mode:'hide'
+
+	 // We'll use updatemenus (whose functionality includes menus as
+	 // well as buttons) to create a play button and a pause button.
+	 // The play button works by passing `null`, which indicates that
+	 // Plotly should animate all frames. The pause button works by
+	 // passing `[null]`, which indicates we'd like to interrupt any
+	 // currently running animations with a new list of frames. Here
+	 // The new list of frames is empty, so it halts the animation.
+  }
+
+    Plotly.newPlot('myDiv', data,layout,
+    {
+    displayModeBar: false,
+    modeBarButtonsToRemove: ["sendDataToCloud", "hoverCompareCartesian"]
+  }
+            //, {displayModeBar: false}
+            );
+
+    } );
+</script>
+
+</body>
+</html>

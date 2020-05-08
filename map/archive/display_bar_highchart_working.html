@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High Charts</title>
+    <!-- 1. Add these JavaScript inclusions in the head of your page -->
+		<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+         <script src="https://d3js.org/d3.v3.min.js"></script>
+
+    <!-- 2. Add the JavaScript to initialize the chart on document ready -->
+		<script type="text/javascript">
+
+		d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/05-04-2020.csv", function(data){
+
+
+        		console.log(data);
+        		data_point = [];
+                for (var i = 0; i < data.length; i++) {
+                  var row = data[i];
+                  var test = [];
+                  test.push(row['Province_State']);
+                  test.push(row['Confirmed']);
+                  data_point.push(test);
+                }
+                console.log("Data point",data_point);
+
+                var options = {
+                    chart: {
+                        type:"bar",
+                        marginLeft: 150
+                    },
+                    title: {
+                        text: 'Countries'
+                    },
+                 xAxis: {
+                    type: 'category',
+                    title: {
+                        text: null
+                    },
+                    min: 0,
+                    max: 4,
+                    scrollbar: {
+                        enabled: true
+                    },
+                    tickLength: 0
+                },
+                yAxis: {
+                    min: 0,
+                    max: 1200000,
+                    title: {
+                        text: 'Cases',
+                        align: 'high'
+                    }
+                },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                    name:"Cases",
+                    data:[
+                    ["Alabama",8112],
+["Alaska",370],
+["American Samoa",0],
+["Arizona",8924],
+["Arkansas",3491],
+["California",55884],
+["Colorado",16918],
+["Connecticut",29973],
+["Delaware",5288],
+["Diamond Princess",49],
+["District of Columbia",5170],
+["Florida",36897],
+["Georgia",29451],
+["Grand Princess",103],
+["Guam",145],
+["Hawaii",621],
+["Idaho",2106],
+["Illinois",63777],
+["Indiana",20507],
+["Iowa",9703],
+["Kansas",5383],
+["Kentucky",5245],
+["Louisiana",29673],
+["Maine",1205],
+["Maryland",26408],
+["Massachusetts",69087],
+["Michigan",43990],
+["Minnesota",7234],
+["Mississippi",7877],
+["Missouri",8946],
+["Montana",457],
+["Nebraska",6037],
+["Nevada",5630],
+["New Hampshire",2588],
+["New Jersey",128269],
+["New Mexico",4031],
+["New York",318953],
+["North Carolina",11971],
+["North Dakota",1225],
+["Northern Mariana Islands",14],
+["Ohio",20474],
+["Oklahoma",4044],
+["Oregon",2759],
+["Pennsylvania",52816],
+["Puerto Rico",1843],
+["Rhode Island",9652],
+["South Carolina",6757],
+["South Dakota",2668],
+["Tennessee",13571],
+["Texas",32783],
+["Utah",5317],
+["Vermont",902],
+["Virgin Islands",66],
+["Virginia",19493],
+["Washington",15462],
+["West Virginia",1224],
+["Wisconsin",8236],
+["Wyoming",596]
+]
+                    }]
+                };
+
+            Highcharts.chart('container', options);
+
+
+
+    } );
+
+
+
+
+		</script>
+</head>
+<body>
+<!-- 3. Add the container -->
+		<div id="container" style="height: 400px; min-width: 320px; max-width: 600px; margin: 0 auto"></div>
+</body>
+</html>

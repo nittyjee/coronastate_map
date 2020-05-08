@@ -17,7 +17,8 @@ var map = new mapboxgl.Map({
     hash: true,
     center: [20, 12],
     zoom: 1.5,
-    pitchWithRotate: false
+    pitchWithRotate: false,
+	attributionControl: false
 });
 
 var hoveredStateId = null;
@@ -27,8 +28,10 @@ var hoveredStateId = null;
 /////////////////////////////
 
 var nav = new mapboxgl.NavigationControl();
-map.addControl(nav, "top-left");
+map.addControl(nav, "bottom-right");
 
+map.addControl(new mapboxgl.FullscreenControl(), "bottom-right");
+map.addControl(new mapboxgl.AttributionControl(), "top-left");
 
 
 
@@ -86,19 +89,6 @@ function changeDate(unixDate) {
 
     map.setFilter("covid_country_boundaries-dqpfoq", dateFilter);
 
-//    map.setFilter("adm0_test", dateFilter);
-//
-//    map.setFilter("static_adm1_test", dateFilter);
-//
-//    map.setFilter("adm1_bunch1_test", dateFilter);
-//
-//    map.setFilter("adm1_bunch2_test", dateFilter);
-//
-//    map.setFilter("adm2_test", dateFilter);
-//
-//    map.setFilter("adm2_test_closer", dateFilter);
-//
-//    map.setFilter("adm3-1aj9ap", dateFilter);
     map.setFilter("adm0_test", dateFilter);
 
     map.setFilter("static_adm1_test", dateFilter);
@@ -111,7 +101,7 @@ function changeDate(unixDate) {
 
     map.setFilter("adm2_test_closer", dateFilter);
 
-    map.setFilter("adm3_test", dateFilter);
+    map.setFilter("adm3-1aj9ap", dateFilter);
 
 
 
@@ -133,10 +123,12 @@ function setLayers() {
     ];
 
     //LEGEND?
+	/*A
     var legend = document.getElementById("legend");
     while (legend.hasChildNodes()) {
         legend.removeChild(legend.lastChild);
     }
+	*/
 
     //TOGGLING
     for (var i = 0; i < toggleableLayerIds.length; i++) {

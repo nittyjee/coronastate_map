@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+
+Confirmed Cases
+<!--<div id="chart"></div>-->
+ <div style="max-height:800px; overflow:scroll; border:1px; position:relative">
+  <div id="tester" style="overflow:auto;"><!-- Plotly chart will be drawn inside this DIV --></div>
+    </div>
+
+<script>
+    var comma_format = Plotly.d3.format(",");
+    Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+// date is filtered below
+    var unique_dates = Plotly.d3.nest().key(function(d) { return d.Date;}).entries(data);
+
+    function fill(N, func) {
+      var empty = Array.apply(null, Array(N));
+      return empty.map(func);
+    }
+    console.log(unique_dates.length);
+
+    function getData(datestring) {
+        var data2, buf, trace;
+
+        data2 = data.filter(function(d) { return d.Date.match(datestring); });
+        var max_confirmed = Math.max.apply(Math, data2.map(function(o) { return o.Confirmed; }));
+        console.log(data2);
+        console.log("Max", Math.max.apply(Math, data2.map(function(o) { return o.Confirmed; })));
+        buf = data2.sort(function(a,b) {
+                         return Plotly.d3.descending(+a.Confirmed, +b.Confirmed);
+        });
+        var x_country = [], y_confirmed = [], text_x=[], width_x=[];
+        for (var i = 0; i < 20; i++) {
+          var row = buf[i];
+          console.log(row['Country']);
+          x_country.push( row['Country'] );
+          y_confirmed.push( row['Confirmed'] );
+          text_x.push(comma_format(row['Confirmed']));
+          width_x.push(.75);
+
+        }
+        trace = {
+            type: 'bar',
+            y: x_country,
+            x: y_confirmed,
+            width: width_x,
+            orientation: 'h',
+            texttemplate:'%{x}<br>%{y}',
+            textposition: 'outside',
+            hoverinfo: 'none',
+            cliponaxis:false
+        };
+        var returnvalue = {
+          name: datestring,
+          data: [trace],
+          layout: {
+                    font:{'size': 14},
+                    xaxis:{'showline': false,
+                            range:[0, max_confirmed],
+                                'visible': false},
+                    yaxis:{'showline': false, 'visible': false},
+                    bargap:0.15
+          }
+        }
+        return returnvalue;
+    }
+
+
+<!--    data2 = data.filter(function(d) { return d.Date.match("2020-04-22"); });-->
+<!--    console.log(data2);-->
+<!--    buf = data2.sort(function(a,b) {-->
+<!--                         return Plotly.d3.descending(+a.Confirmed, +b.Confirmed);-->
+<!--                    });-->
+<!--    var x_country = [], y_confirmed = [];-->
+<!--    for (var i = 0; i < 10; i++) {-->
+<!--      row = buf[i];-->
+<!--      console.log(row['Country']);-->
+<!--      x_country.push( row['Country'] );-->
+<!--      y_confirmed.push( row['Confirmed'] );-->
+
+<!--    } -->
+  var traces = [getData(unique_dates[unique_dates.length-1].key)];
+  var frames = [];
+  for (i = 0; i < unique_dates.length; i++) {
+        frames.push({
+          name: unique_dates[i].key,
+          data: [getData(unique_dates[i].key)],
+          layout: {
+                    font:{'size': 14},
+                    xaxis:{'showline': false,
+                //            range:[0, ]
+                                'visible': false},
+                    yaxis:{'showline': false, 'visible': false},
+                    bargap:0.15
+          }
+        })
+  }
+
+  // Now create slider steps, one for each frame. The slider
+  // executes a plotly.js API command (here, Plotly.animate).
+  // In this example, we'll animate to one of the named frames
+  // created in the above loop.
+  var sliderSteps = [];
+
+  for (i = 0; i < unique_dates.length; i++) {
+    sliderSteps.push({
+      method: 'animate',
+      label: unique_dates[i].key,
+      args: [[unique_dates[i].key], {
+        mode: 'immediate',
+        transition: {duration: 300},
+        frame: {duration: 300, redraw: false},
+      }]
+    });
+  }
+// Hima: To do: Range needs to be from data
+  let customWidth = 15 * 50;
+  var layout = {
+
+    autosize: false,
+    width: 500,
+    height: customWidth,
+                font:{'size': 14},
+                    xaxis:{'showline': false, 'visible': false, side:'left',},
+                    yaxis:{'showline': false, 'visible': false},
+                    bargap:0.15,
+        xaxis:{
+
+<!--          range:[0, 1200000]-->
+        },
+        yaxis:{
+            range:["US","Egypt"],
+            showgrid:false,
+            ticks:'',
+            //showticklabels:false,
+            autorange:'reversed'
+        },
+        hovermode: 'closest',
+	 // We'll use updatemenus (whose functionality includes menus as
+	 // well as buttons) to create a play button and a pause button.
+	 // The play button works by passing `null`, which indicates that
+	 // Plotly should animate all frames. The pause button works by
+	 // passing `[null]`, which indicates we'd like to interrupt any
+	 // currently running animations with a new list of frames. Here
+	 // The new list of frames is empty, so it halts the animation.
+    updatemenus: [{
+      x: 0,
+      y: 0,
+      active: 10,
+      showactive:true,
+      autoplay: true,
+      executeoninitialization: true,
+      yanchor: 'top',
+      xanchor: 'left',
+
+      direction: 'left',
+      type: 'buttons',
+      pad: {t: 87, r: 10},
+      buttons: [{
+        method: 'animate',
+        args: [null, {
+          mode: 'immediate',
+          fromcurrent: true,
+          transition: {duration: 300},
+          frame: {duration: 500, redraw: false}
+        }],
+        label: 'Play'
+      }, {
+        method: 'animate',
+        args: [[null], {
+          mode: 'immediate',
+          transition: {duration: 0},
+          frame: {duration: 0, redraw: false}
+        }],
+        label: 'Pause'
+      }]
+    }],
+	 // Finally, add the slider and use `pad` to position it
+	 // nicely next to the buttons.
+    sliders: [{
+      pad: {l: 130, t: 55},
+      currentvalue: {
+        visible: true,
+        prefix: 'Date:',
+        xanchor: 'right',
+        font: {size: 20, color: '#666'}
+      },
+      steps: sliderSteps
+    }]
+  }
+
+    Plotly.newPlot('tester',
+        {
+        data: traces,
+        layout: layout,
+        displayModeBar: false,
+        config: {showSendToCloud:true},
+        frames: frames,
+      }, {displayModeBar: false});
+    //    data,layout, {displayModeBar: false});
+
+    } );
+</script>
+
+</body>
+</html>

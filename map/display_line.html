@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <title>Title</title>
@@ -31,7 +29,8 @@ Line Graph
       y: y_confirmed,
       name:"Confirmed",
       mode: 'lines',
-      type: 'scatter'
+      type: 'scatter',
+      hovertemplate: "%{y:,}"
     };
 
     var trace2 = {
@@ -39,14 +38,16 @@ Line Graph
       y: y_recovered,
       name:"Recovered",
       mode: 'lines',
-      type: 'scatter'
+      type: 'scatter',
+      hovertemplate: "%{y:,}"
     };
     var trace3 = {
       x: x_time,
       y: y_active,
       name:"Active",
       mode: 'lines',
-      type: 'scatter'
+      type: 'scatter',
+      hovertemplate: "%{y:,}"
     };
 
     var trace4 = {
@@ -54,16 +55,31 @@ Line Graph
       y: y_deaths,
       name:"Deaths",
       mode: 'lines',
-      type: 'scatter'
+      type: 'scatter',
+      hovertemplate: "%{y:,}"
     };
 
     var data = [trace1, trace2, trace3, trace4];
 
     var layout = {
+   // separators: '.,',
+
+     xaxis:{
+<!--        showspikes: true,-->
+<!--        spikemode: 'across',-->
+<!--        spikedash: 'solid',-->
+<!--        spikesnap: 'cursor',-->
+<!--        showline:true,-->
+<!--        showgrid:true,-->
+
+     },
       yaxis: {
-         tickformat: '.0'
+         tickformat: ',',
+
+
       },
-      showlegend:false
+      showlegend:false,
+      hovermode: 'x unified'
     };
 
     Plotly.newPlot('tester', data, layout,  {displayModeBar: false});
