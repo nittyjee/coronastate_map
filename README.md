@@ -17,6 +17,13 @@ Changes made
 5/7/2020
 Copied Arsen's final file to hima_map folder.
 
+5/9/2020
+Cleaned up the file in coronastate_v3.
+This has the following:
+- Line chart and table unlinked. It contains data from JHU's upddate
+- Unlinked the slider from those charts so that the map will reflect the latest date.
+
+
 
 
 

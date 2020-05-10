@@ -15,9 +15,12 @@
 		<script src="timeline/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script src="timeline/vendor/jquery.ui.touch-punch.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
-		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
-		
+
+<!--		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>-->
+<!--		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />-->
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+
 		<link href='timeline/index.css' rel='stylesheet' />
 
 		<!-- MODAL -->
@@ -125,8 +128,8 @@
 				}
 				
 				#bar-graph-section, #totals-section {
-				    padding-left: 5px;
-					padding-right: 5px;
+				    padding-left: 20px;
+					padding-right: 20px;
 				}
 				
 				#bar-graph-section {
@@ -144,15 +147,20 @@
                    top: 20px;
                    overflow-y: auto;
                    overflow-x: hidden;
-                   width: 250px;
+                   /*width: 250px;*/
 			       /*A*/
-                   height: 100%;
+                   height: 425px;
                    background-color: #e8e8e8;
                    border: 1px solid #AAAAAA;
                    border-radius: 4px;
-                   box-shadow: inset 1px 1px 6px 2px rgba(0,0,0, .25);
+                   /*box-shadow: inset 1px 1px 6px 2px rgba(0,0,0, .25);*/
 
-                }
+				}
+
+
+
+
+
 				.time-slider-plot {
 						height:150px;
 <!--					   display: none;-->
@@ -162,15 +170,24 @@
 				}
 				
 				.info-row-odd, .info-row-even {
-				    width: 100%; height: 23px;
+				    width: 100%; height: 23px; font-weight: bold; font-size: large;
 				}
 				
 				.info-row-odd {
-				    background-color: gainsboro;
+				    /*background-color: gainsboro;*/
 				}
 				
-				#ttl { width: 100%; height: 77px; background-color: #2e3436; margin-top: 2px; padding-top: 25px; }
-			</style>
+				#ttl {
+					width: 100%;
+					height: 77px;
+					/* background-color: #2e3436; */
+					/* margin-top: 2px; */
+					padding-top: 15px;
+					padding-bottom: 15px;
+					font-weight: 600;
+				}
+
+</style>
 			
 			
 			<!-- HEADER STYLE-->
@@ -342,7 +359,18 @@
 					   padding-right: 0; 
 					   width: 186px;
 					}
+					/*
+					#bar-graph-cont {
+				       height: 194px;
+			        }
+					*/
+<!--					.viewport {-->
+<!--                       width: 200px;-->
+<!--			           /*A*/-->
+<!--&lt;!&ndash;                       height: 192px;&ndash;&gt;-->
 
+<!--					   float: right;-->
+<!--                    }-->
 
 					#ttl { margin-top: 0px; }
 				}
@@ -365,30 +393,28 @@
 				#footer {
 
 					position:fixed;
-
+					left:0;
 					bottom: 0;
 
 					width:100%;
 					/* height: 35px; */
 					height: 100px;
-					left: 260px;
 <!--					background: #f5f6f7-->
-					min-width: 100px;
+<!--					min-width: 100px;-->
 
-					border-top: 2px solid #b0691d;
+<!--					border-top: 2px solid #b0691d;-->
 
-					font-size: 15px;
-                    padding-left: 10px;
-					padding-right: 50px;
-					display: inline-block;
+<!--					font-size: 15px;-->
+<!--                    padding-left: 10px;-->
+<!--					padding-right: 10px;-->
+<!--					display: inline-block;-->
 
 				}
 				
 				#slider {
-				    top: 8px;
-				    left: 10px;
-				    right: 50px;
+					top: 8px;
 
+					
 				}
 				
 				
@@ -516,6 +542,9 @@
 		<!-- MAP DIV-->
 
 		<div id="map" class="map"></div>
+		<!-- MAP.JS SOURCE -->
+
+		<script src="timeline/js/map.js"></script>
 		<!-- TIMELINE PANEL DIV -->
 
 
@@ -541,16 +570,19 @@
 			<div id='totals-section'>
 			    <div id="ttl">
 				    <center>
-					        <font color="white" size="3">Total Confirmed</font><br>
-					        <font color="red" size="5" id="confirmed_id">2,954,106 </font>
+					        <font color="black" size="4">Total Confirmed</font><br>
+					        <font color="red" size="8" id="confirmed_id">2,954,106 </font>
 					</center>
 				</div>
-				<br>
-				<div class="info-row-even"><b>Cases on:</b> <input type="text" id="date" class="float-right" style="color: navy;" value="" /></div>
+				<hr>
+				<div class="info-row-even"><b>Date:</b> <input type="text" id="date" class="float-right" style="color: navy;" value="" /></div>
+				<hr>
 				<div class="info-row-odd"><b>Active:</b> <font color="darkorange" id="active_id" class="float-right"> 1,934,342 </font></div>
+				<hr>
 				<div class="info-row-even"><b>Deaths:</b> <font color="maroon" id="deaths_id" class="float-right">205,398</font></div>
+				<hr>
 				<div class="info-row-odd"><b>Recovered:</b> <font color="darkgreen" id="recovered_id" class="float-right">860,875</font></div>
-
+				<hr>
 			</div>
 
 
@@ -723,9 +755,9 @@ var trace1 = {
 							document.getElementById("deaths_id").innerHTML = formatComma(y_deaths[x_time.length-1]);
 							document.getElementById("active_id").innerHTML = formatComma(y_active[x_time.length-1]);
     
-	setTimeout(function(){
-        changeDate(moment(x_time[x_time.length-1]).unix());
-    }, 1500);
+			setTimeout(function(){
+				changeDate(moment(x_time[x_time.length-1]).unix());
+			}, 1500);
 	
 
                 var sliderStart = 0;
@@ -745,26 +777,26 @@ var trace1 = {
 						
 						currdate = x_time[ind];
 	  
-      console.log(currdate);
-		
-		var update = {
-           shapes: [{
-		    type: 'line',
-            line: {
-              color: 'black',
-              width: 5
-            },
-            xref: 'x',
-            yref: 'paper',
-            x0: currdate,
-            y0: 0,
-            x1: currdate,
-            y1: 1,
-            opacity: 1
-		   }]
-        };
+						console.log("Today's Date",currdate);
+
+						var update = {
+						   shapes: [{
+							type: 'line',
+							line: {
+							  color: 'black',
+							  width: 5
+							},
+							xref: 'x',
+							yref: 'paper',
+							x0: currdate,
+							y0: 0,
+							x1: currdate,
+							y1: 1,
+							opacity: 1
+						}]
+						};
         Plotly.relayout(graphDiv, update);
-		
+		console.log("Curr Date before changedate:",moment(currdate).unix());
 		changeDate(moment(currdate).unix());
 		
 		
@@ -874,13 +906,7 @@ var trace1 = {
             
             data_set = getData(unique_dates[unique_dates.length-1].key);
 			
-            /*
-            barGraph = Highcharts.chart('bar-graph-cont', data_set);
-			data_set = {};
-			
-			console.log(barGraph.options.series[0].data);
-			*/
-			
+
 		     buildTable();
 			 
 			
@@ -891,7 +917,7 @@ var trace1 = {
     function buildTable() {
  	    var states = data_set[0];
         var row_length = data_set[1];
-        console.log("options",states);
+
 
 
         var virtualScroller = d3.VirtualScroller()
@@ -976,8 +1002,11 @@ var trace1 = {
  
  $(document).ready(function () {
 				if (jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+				const today = new Date()
+				const yesterday = new Date(today)
 
-				
+				yesterday.setDate(yesterday.getDate() - 1)
+<!--				changeDate(moment(yesterday).unix());-->
 
 
 
@@ -991,9 +1020,7 @@ var trace1 = {
 		</script>
 
 
-		<!-- MAP.JS SOURCE -->
 
-		<script src="timeline/js/map.js"></script>
 
 	</body>
 
