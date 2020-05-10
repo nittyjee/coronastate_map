@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- SOURCES-->
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>The CoronaState Project</title>
+		<meta charset="utf-8" />
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="timeline/vendor/jquery-ui-1.10.3.custom/css/ui-darkness/jquery-ui-1.10.3.stretched.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="timeline/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="timeline/vendor/jquery.ui.touch-punch.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+
+<!--		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>-->
+<!--		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />-->
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+
+		<link href='timeline/index.css' rel='stylesheet' />
+		<link href='index.css' rel='stylesheet' />
+		<!-- MODAL -->
+		<link href="modal/modal_styles.css" rel="stylesheet">
+    	<script defer src="modal/modal_script.js"></script>
+
+
+		<!-- TIMELINE FUNCTIONALITY -->
+        <!-- Plotly JS -->
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		
+		
+		<!-- D3 JS -->
+		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script src="timeline/js/virtualscroller.js"></script>
+		
+		
+
+
+		<script type="text/javascript">
+			// Google Analytics
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-28801666-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function () {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+
+	</head>
+
+	<body>
+
+		<!-------------------->
+		<!--ADD HEADER DIV---->
+		<!-------------------->
+		<div class="header">
+			
+		<!--LOGO-->
+
+			<a href="http://coronastate.org/" class="logo">
+				<img id="logo-icon"
+					src="https://www.redcross.org/content/dam/icons/disasters/virus/Virus-1000x1000-G-RC.png.img.png"
+					align="middle">
+			</a>
+
+			  
+			<div id="header_text" class="headerText">
+				The CoronaState Project<br><p class="headerSubText">&gt; All Covid19 Location Data in One Place</p>
+			</div>
+			<!--
+			<i>... All Covid19 locations in one place.</i>
+			-->
+			<div class="header-right">
+				<!--About dialog button, opens modal-->
+				<button class="button" data-modal-target="#modal2">Donate</button>
+				<!--About dialog button, opens modal-->
+				<button class="button" data-modal-target="#modal">About</button>
+			</div>
+	
+		</div>
+
+		<!------------------------------------->
+		<!--CLICK ON ABOUT, OPEN MODAL DIALOG-->
+		<!------------------------------------->
+
+		<div class="modal" id="modal">
+			<div class="modal-header">
+				<div class="title">About</div>
+					<button data-close-button class="close-button">&times;</button>
+			</div>
+			<div class="modal-body">
+				<h1>The CoronaState Project</h1>
+				<p>The coronavirus pandemic is everywhere, but we are having to look everywhere for the data to fight it. The CoronaState Project is an attempt to put all the data in one place, so we can know where the pandemic has spread, how it got there, and where it's going.
+							<br />
+							<br />
+					The map will help people see where they are in relation to the disease, and be more vigilant in fighting it. This data will be invaluable for epidemiologists in fighting Covid-19 and future diseases and pandemics.
+							<br />
+							<br />
+					We will always be looking for volunteers.
+							<br />
+					Contribute to the effort here:
+							<a href="https://github.com/nittyjee/coronastate" target="_blank" rel="nofollow noopener noreferrer">
+								 https://github.com/nittyjee/coronastate
+							</a>
+							<br />
+							<br />
+							 Contact Us: 
+							<a href="mailto:info@coronastate.org">
+								 info@coronastate.org
+							</a>
+				</p>
+
+				<p><br>
+							We need your help to make this project a reality. Please contribute to our Gofundme Campaign:
+				</p>
+				<h2>
+						<a href="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place" target="_blank">
+							Donate
+						</a>
+				</h2>
+
+			</div>
+		</div>
+
+		<div class="modal" id="modal2">
+			<div class="modal-header">
+				<div class="title">Donate</div>
+				<button data-close-button class="close-button">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="gfm-embed" data-url="https://www.gofundme.com/f/coronastate-project-all-covid19-data-in-one-place/widget/medium"></div>
+				<script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+				<p>
+					The CoronaState Map is already the most thorough and well-visualized map available, and needs some major additions to make it complete. We need graphs to go along with the map, and there are a lot more datasets that need to be processed and added. We need $5000 to establish those components, and the more funding we receive, the further we can go.
+					<br />
+					<br />
+					Tiers of funding:
+					<br />
+					*$5000: Develop basic data visualizations and process comprehensive datasets.
+					<br />
+					*$15,000: Show projections over time, and begin coordinating volunteers to gather and map data at a very local level.
+					<br />
+					*$25,000: Gather data at a very local level, country by country. Further map visualizations of movement and transmission.
+				</p>
+
+			</div>
+		</div>
+
+		<div id="overlay">
+
+
+		</div>
+
+		<!-- MAP DIV-->
+
+		<div id="map" class="map_style"></div>
+
+		<!-------------------->
+		<!--ADD FOOTER DIV---->
+		<!-------------------->
+
+		<div id="footer">
+			<!-- TIMELINE slider DIV -->
+		   <div id="slider"></div>
+		</div>
+		<!-- BASEMAP SWITHER DIV -->
+		<div id="styleSwitcher"></div>
+        <!-- INFO PANEL DIV -->
+
+		<div id='info-section'>
+			<div id='totals-section'>
+			    <div id="ttl">
+				    <center>
+					        <font color="black" size="4">Total Confirmed</font><br>
+					        <font color="red" size="8" id="confirmed_id">4,000,000 </font>
+					</center>
+				</div>
+				<hr>
+				<div class="info-row-even"><b>Date:</b> <input type="text" id="date" class="float-right" style="color: navy;" value="" /></div>
+				<hr>
+				<div class="info-row-odd"><b>Active:</b> <font color="darkorange" id="active_id" class="float-right"> 2,934,342 </font></div>
+				<hr>
+				<div class="info-row-even"><b>Deaths:</b> <font color="maroon" id="deaths_id" class="float-right">305,398</font></div>
+				<hr>
+				<div class="info-row-odd"><b>Recovered:</b> <font color="darkgreen" id="recovered_id" class="float-right">1,260,875</font></div>
+				<hr>
+			</div>
+
+
+			<!--<h4>Aggregate Over Time</h4>-->
+			<div id="line-plot-id"  class = "line-plot"></div>
+
+			<!--<h4>Confirmed Cases by Country</h4>-->
+			<div id= "viewport" class="viewport"></div>
+
+		</div>
+
+
+<!-- MAP.JS SOURCE -->
+
+		<script src="timeline/js/map.js">
+
+<!--			map.on('style.load', () => {-->
+<!--			  const waiting = () => {-->
+<!--				if (!map.isStyleLoaded()) {-->
+<!--				  setTimeout(waiting, 200);-->
+<!--				} else {-->
+<!--				  changeDate(moment("2020-05-08").unix());-->
+<!--				}-->
+<!--			  };-->
+<!--			  waiting();-->
+<!--			});-->
+
+
+		</script>
+		
+<script type="text/javascript">
+
+	// General global variables
+	 const today = new Date().toLocaleString("en-US", {timeZone: "America/New_York"})
+
+	 const yesterday = new Date(today)
+	 yesterday.setDate(yesterday.getDate() - 1)
+
+	 var data_set = {};
+	 var unique_dates = [];
+	 var load_data = [];
+	 var barGraph;
+
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// ================================================================================
+	// -------------------------------  Plotly  ---------------------------------------
+	// =========================https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv=======================================================
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				
+				
+	// Plotly global variables
+	var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
+	var ind = 0;
+	var graphDiv = document.getElementById('line-plot-id');
+	var currdate = [];
+	var formatComma = d3.format(",");
+
+<!--	Code to get total summary -->
+	d3.csv("https://raw.githubusercontent.com/nittyjee/coronastate/master/data/layers/adm0.csv", function(data){
+		var data2 = data.filter(function(d) { return (d.DayEnd == 20250101); });
+		var sum_confirmed = 0, sum_deaths =0, sum_recovered = 0;
+
+        for (var i = 0; i < data2.length; i++) {
+          var row = data2[i];
+          sum_confirmed = sum_confirmed + Number(row["cases"]);
+          sum_recovered = sum_recovered + Number(row["recovered"]);
+          sum_deaths = sum_deaths + Number(row["deaths"]);
+        }
+        var sum_active = sum_confirmed - sum_recovered;
+
+		console.log("data2 - confirmed",sum_confirmed);
+		$("#date").val(moment.unix(moment(today).unix()).format("YYYY-MM-DD"));
+		document.getElementById("confirmed_id").innerHTML = formatComma(sum_confirmed);
+		document.getElementById("recovered_id").innerHTML = formatComma(sum_recovered);
+		document.getElementById("deaths_id").innerHTML = formatComma(sum_deaths);
+		document.getElementById("active_id").innerHTML = formatComma(sum_active);
+
+	});
+
+	Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv", function(buf){
+    <!--For Line Chart-->
+		for (var i = 0; i < buf.length; i++) {
+		  var row = buf[i];
+		  x_time.push( row['Date'] );
+		  y_confirmed.push( row['Confirmed'] );
+		  y_recovered.push( row['Recovered'] );
+		  y_deaths.push( row['Deaths'] );
+		  var _temp = row['Confirmed'] - row['Recovered'];
+		  y_active.push(_temp);
+		}
+
+
+		var trace1 = {
+		  x: x_time,
+		  y: y_confirmed,
+		  name:"Confirmed",
+		  mode: 'lines',
+		  type: 'scatter',
+		  line: {
+			color: 'red',
+			width: 3
+		  },
+		 hovertemplate: "%{y:,}",
+		};
+
+		var trace2 = {
+		  x: x_time,
+		  y: y_recovered,
+		  name:"Recovered",
+		  mode: 'lines',
+		  type: 'scatter',
+		  line: {
+			color: 'darkgreen',
+			width: 2
+		  },
+		 hovertemplate: "%{y:,}"
+		};
+		var trace3 = {
+		  x: x_time,
+		  y: y_active,
+		  name:"Active",
+		  mode: 'lines',
+		  type: 'scatter',
+		  line: {
+			color: 'darkorange',
+			width: 2
+		  },
+		  hovertemplate: "%{y:,}"
+		};
+
+		var trace4 = {
+		  x: x_time,
+		  y: y_deaths,
+		  name:"Deaths",
+		  mode: 'lines',
+		  type: 'scatter',
+		  line: {
+			color: 'maroon',
+			width: 2
+		  },
+		  hovertemplate: "%{y:,}"
+		};
+
+		var data = [trace1, trace2, trace3, trace4];
+
+		var layout = {
+
+		  margin: {
+			l: 25,
+			r: 25,
+			b: 20,
+			t: 0,
+			pad: 0
+		  },
+		  xaxis:{
+			automargin: true,
+		  },
+		  yaxis: {
+			 //fixedrange: true,
+			 automargin: true,
+			 showticklabels: true
+		  },
+		  showlegend:false,
+		  hovermode: 'x unified'
+		};
+
+
+		Plotly.newPlot(graphDiv, data, layout,  {displayModeBar: false});
+
+	<!--	End of Line Chart-->
+
+		// changeDate(moment(x_time[x_time.length-1]).unix());
+		console.log("Today is ",today)
+
+
+
+		<!--date goes over sliderend-->
+		var sliderStart = moment("01/25/2020").unix();
+		var sliderEnd = moment(today).unix();
+
+
+		$("#slider").slider({
+			min: sliderStart,
+			max: sliderEnd,
+			step: 86400, //24 hrs in unix time, set slider step to 1 day=86400 seconds
+			value: sliderEnd,
+			start: function( event, ui ) {
+        			console.log(ui);
+        			$(ui.handle).find('.ui-slider-tooltip').show();
+      		},
+      		stop: function( event, ui ) {
+        			$(ui.handle).find('.ui-slider-tooltip').hide();
+      		},
+			slide: function (event, ui) {
+
+				$("#date").val(moment.unix(ui.value).format('MM/DD/YYYY'));
+				//console.log(ui.value);
+				currdate = String(moment.unix(ui.value).format('YYYY-MM-DD'));
+				$(ui.handle).find('.ui-slider-tooltip').text(currdate);
+
+				console.log("Current slider date: ",currdate);
+
+				var update = {
+				   shapes: [{
+						type: 'line',
+						line: {
+						  color: 'black',
+						  width: 5
+						},
+						xref: 'x',
+						yref: 'paper',
+						x0: currdate,
+						y0: 0,
+						x1: currdate,
+						y1: 1,
+						opacity: 1
+				   }]
+				};
+
+				console.log("Curr Date before changedate:",moment(currdate).unix());
+				changeDate(moment(currdate).unix());
+
+				$("#date").val(currdate);
+
+
+			},
+			create: function( event, ui ) {
+        		var tooltip = $('<div class="ui-slider-tooltip" />').css({
+            		position: 'absolute',
+            		top: 40,
+            		left: -20,
+            		color: "red",
+            		width: "100px",
+            		size: "1"
+
+        		});
+
+        		$(event.target).find('.ui-slider-handle').append(tooltip);
+      		},
+      		change: function(event, ui) {}
+		})
+
+	});
+
+	<!--End of reading worldwide data-->
+
+	<!--	Beginning of table defintion -->
+
+    var colorScale = d3.scale.category20();
+
+    var scrollSVG = d3.select(".viewport").append("svg")
+    .attr("class", "scroll-svg");
+    var defs = scrollSVG.insert("defs", ":first-child");
+
+    createFilters(defs);
+
+    var chartGroup = scrollSVG.append("g")
+            .attr("class", "chartGroup")
+            //.attr("filter", "url(#dropShadow1)"); // sometimes causes issues in chrome
+
+    chartGroup.append("rect")
+            .attr("fill", "#FFFFFF");
+
+
+    var rowEnter = function(rowSelection) {
+            rowSelection.append("rect")
+                .attr("rx", 3)
+                .attr("ry", 3)
+                .attr("width", "250")
+                .attr("height", "24")
+                .attr("fill-opacity", 0.25)
+                .attr("stroke", "#999999")
+                .attr("stroke-width", "2px");
+            rowSelection.append("text")
+                .attr("transform", "translate(10,15)");
+    };
+    var rowUpdate = function(rowSelection) {
+            rowSelection.select("rect")
+                .attr("fill", function(d) {
+                    return colorScale(d.id);
+                });
+            rowSelection.select("text")
+                .text(function (d) {
+                    return (d.index + 1) + ". " + d.label;
+                });
+    };
+
+    var rowExit = function(rowSelection) {
+    };
+
+
+// ===============================================================================================
+
+
+ 
+	d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv", function(data){
+            // date is filtered below
+    	unique_dates = d3.nest().key(function(d) { return d.Date;}).entries(data);
+        //console.log(data);
+		load_data = data;
+
+        data_set = getData(unique_dates[unique_dates.length-1].key);
+	    buildTable();
+
+    } );
+ 
+    function buildTable() {
+ 	    var states = data_set[0];
+        var row_length = data_set[1];
+
+
+
+        var virtualScroller = d3.VirtualScroller()
+            .rowHeight(30)
+            .enter(rowEnter)
+            .update(rowUpdate)
+            .exit(rowExit)
+            .svg(scrollSVG)
+            .totalRows(row_length)
+            .viewport(d3.select(".viewport"));
+
+        // tack on index to each data item for easy to read display
+         // tack on index to each data item for easy to read display
+        states.items.forEach(function(nextState, i) {
+            nextState.index = i;
+        });
+
+        virtualScroller.data(states.items, function(d) { return d.id; });
+
+        chartGroup.call(virtualScroller);
+    }
+ 
+        function getData(datestring) {
+                var data2, buf, trace;
+
+                data2 = load_data.filter(function(d) { return d.Date.match(datestring); });
+                buf = data2.sort(function(a,b) {
+                                 return d3.descending(+a.Confirmed, +b.Confirmed);
+                });
+                var text_x =[];
+                var state = {
+                label: "label",
+                items:[],
+                };
+                var formatComma = d3.format(",");
+                for (var i = 0; i < buf.length; i++) {
+                  var row = buf[i];
+                  var n = Number(row['Confirmed']);
+                  var string_value = row['Country'].concat(" - ").concat(formatComma(n));
+                  state.items.push({
+                    name:row['Country'],
+                   label: string_value,
+                   id: i
+                  });
+
+                }
+                return [state, buf.length];
+        }
+ 
+        function createFilters(svgDefs) {
+            var filter = svgDefs.append("svg:filter")
+                .attr("id", "dropShadow1")
+                .attr("x", "0")
+                .attr("y", "0")
+                .attr("width", "200%")
+                .attr("height", "200%");
+
+            filter.append("svg:feOffset")
+                .attr("result", "offOut")
+                .attr("in", "SourceAlpha")
+                .attr("dx", "1")
+                .attr("dy", "1");
+
+            filter.append("svg:feColorMatrix")
+                .attr("result", "matrixOut")
+                .attr("in", "offOut")
+                .attr("type", "matrix")
+                .attr("values", "0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.2 0");
+
+            filter.append("svg:feGaussianBlur")
+                .attr("result", "blurOut")
+                .attr("in", "matrixOut")
+                .attr("stdDeviation", "1");
+
+            filter.append("svg:feBlend")
+                .attr("in", "SourceGraphic")
+                .attr("in2", "blurOut")
+                .attr("mode", "normal");
+        }
+ 
+ 
+ 
+	$(document).ready(function () {
+				if (jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+
+
+
+
+			});
+			
+			
+		</script>
+ 
+
+
+	</body>
+
+
+
+</html>
