@@ -31,6 +31,10 @@ coronastate_v3.3
  - The total summary at the top left hand side of the dashboard was relying on covid19 data source.
  - Pointed it to our inhouse data summary and is more reliable because it runs every hour.
 
+coronastate-v3.4
+  - Hima's update
+  - The total summary is now syncing up to the timeline.
+  - 
 
 
 
