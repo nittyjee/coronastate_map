@@ -1,0 +1,249 @@
+/* Master CSS file */
+
+html {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+}
+
+a {
+  font-weight: 700;
+  color: #ce5c00;
+}
+
+hr {
+  background-color: #ce5c00;
+  border: none;
+  height: 1px;
+  margin-top: 20px;
+}
+
+.line {
+  margin: 10px;
+  text-align: center;
+  color: #ce5c00;
+  font-weight: 600;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  margin-top: 0;
+}
+
+p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#sidepanel {
+  border: solid 2px #ce5c00;
+  border-radius: 9px;
+  display: block;
+  position: absolute;
+  float: right;
+  width: 260px;
+
+  /*top: 20px;*/
+  top: 100px;
+  right: 20px;
+
+  background: #2e3436;
+  padding: 10px;
+  padding-bottom: 0px;
+  font-size: 15px;
+  color: #eeeeec;
+  z-index: 10000;
+  /*text-align: justify;*/
+  word-spacing: 1px;
+}
+
+#slider,
+#slider2 {
+  width: 240px;
+}
+
+#date {
+  font-size: 20px;
+  width: 150px;
+  background: none;
+  border: 0;
+  text-align: center;
+}
+
+.y1600 {
+  color: #888a85;
+}
+
+.y1700 {
+  color: #5c3566;
+}
+
+.y1800 {
+  color: #75507b;
+}
+
+.y1850 {
+  color: #a40000;
+}
+
+.y1900 {
+  color: #cc0000;
+}
+
+.y1950 {
+  color: #f57900;
+}
+
+.y2000 {
+  color: #edd400;
+}
+
+.k1600 {
+  background: #888a85;
+}
+
+.k1700 {
+  background: #5c3566;
+}
+
+.k1800 {
+  background: #75507b;
+}
+
+.k1850 {
+  background: #a40000;
+}
+
+.k1900 {
+  background: #cc0000;
+}
+
+.k1950 {
+  background: #f57900;
+}
+
+.k2000 {
+  background: #edd400;
+}
+
+.kleur {
+  border: solid 1px black;
+  display: inline-block;
+  width: 20px;
+  height: 13px;
+
+  margin-top: 3px;
+  margin-left: 10px;
+  margin-right: 3px;
+}
+
+td {
+  line-height: 14px;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+.leaflet-container {
+  background: #eeeeec !important;
+}
+
+/*
+.footnote {
+  cursor: pointer;
+  color: #ce5c00;
+}
+*/
+
+.info {
+  margin-top: 15px;
+  /*font-size: 14px;*/
+  font-size: 16px;
+  line-height: 170%;
+}
+
+#content {
+  padding: 10px;
+}
+
+/*
+#footnotediv {
+  font-style: italic;
+}
+*/
+
+/* Styles for legend.layer-list */
+
+#legend {
+  background: #2e3436;
+  position: relative;
+  z-index: 1;
+  top: 5px;
+  right: 5px;
+  border-radius: 3px;
+  width: 250px;
+  font-size: 12px;
+  /* border: 1px solid rgba(0, 0, 0, 0.4); */
+  /* font-family: "Open Sans", sans-serif;
+  font-size: 12px; */
+}
+
+#styleSwitcher {
+  left: 50px;
+  /*ADDING TOP*/
+  top: 90px;
+  position: absolute;
+  background: #fff;
+  padding: 10px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+
+/* #legend a {
+  font-size: 13px;
+  color: #404040;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+#legend a:last-child {
+  border: none;
+}
+
+#legend a:hover {
+  background-color: #f8f8f8;
+  color: #404040;
+}
+
+#legend a.active {
+  background-color: #ce5c00;
+  color: #ffffff;
+}
+
+#legend a.active:hover {
+  background: #964300;
+} */
+
+
+
+
+<style>
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+</style>

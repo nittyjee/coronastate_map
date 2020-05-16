@@ -35,8 +35,12 @@ coronastate-v3.4
   - Hima's update
   - The total summary is now syncing up to the timeline.
   - 
-
-
+coronastate_hover
+  - This is what Nitin gave as implementing hover.
+  
+coronastate-v3.4.2
+  - Hima's update
+  - updated index.html with what Nitin gave. This will take care of the mobile version of the site
 
 
 To do

@@ -243,14 +243,16 @@
 				
 				
 	// Plotly global variables
-	var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
-	var ind = 0;
+
+
 	var graphDiv = document.getElementById('line-plot-id');
 	var currdate = [];
 	var formatComma = d3.format(",");
 
 
 	Plotly.d3.csv("https://raw.githubusercontent.com/datasets/covid-19/master/data/worldwide-aggregated.csv", function(buf){
+		var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
+		var ind = 0;
     <!--For Line Chart-->
 		for (var i = 0; i < buf.length; i++) {
 		  var row = buf[i];
@@ -347,6 +349,8 @@
 
 <!--	Code to get total summary -->
 	d3.csv("https://raw.githubusercontent.com/nittyjee/coronastate/master/data/overall_summary.csv", function(data){
+		var x_time = [], y_confirmed = []; y_recovered = []; y_deaths = []; y_active = [];
+		var ind = 0;
 
 		for (var i = 0; i < data.length; i++) {
 		  var row = data[i];
