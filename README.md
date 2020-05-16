@@ -42,7 +42,9 @@ coronastate-v3.4.2
   - Hima's update
   - updated index.html with what Nitin gave. This will take care of the mobile version of the site
 
-
+coronastate-v3.4.3
+  - Hima's update
+  - Updated hover code on adm0
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
