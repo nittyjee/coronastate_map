@@ -36,22 +36,18 @@
 		<!-- D3 JS -->
 		<script src="https://d3js.org/d3.v3.min.js"></script>
 		<script src="timeline/js/virtualscroller.js"></script>
-		
-		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-166878000-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
 
-
-		<script type="text/javascript">
-			// Google Analytics
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-28801666-1']);
-			_gaq.push(['_trackPageview']);
-
-			(function () {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
+		  gtag('config', 'UA-166878000-1');
 		</script>
+
+		
+
 
 	</head>
 
@@ -169,7 +165,7 @@
 		<div id="footer">
 			<!-- TIMELINE slider DIV -->
 		   <div id="slider"></div>
-		</div>/home/himabindu/PycharmProjects/upwork-map/coronastate_map/coronastate_v3.4.2/index.html
+		</div>
 		<!-- BASEMAP SWITHER DIV -->
 		<div id="styleSwitcher"></div>
         <!-- INFO PANEL DIV -->
@@ -224,7 +220,8 @@
 <script type="text/javascript">
 
 	// General global variables
-	 const today = new Date().toLocaleString("en-US", {timeZone: "America/New_York"})
+	 const today = new Date()
+	 //.toLocaleString("en-US", {timeZone: "America/New_York"})
 
 	 const yesterday = new Date(today)
 	 yesterday.setDate(yesterday.getDate() - 1)

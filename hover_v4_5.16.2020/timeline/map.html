@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- SOURCES-->
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>Coronavirus Map</title>
+		<meta charset="utf-8" />
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="timeline/vendor/jquery-ui-1.10.3.custom/css/ui-darkness/jquery-ui-1.10.3.custom.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="timeline/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="timeline/vendor/jquery.ui.touch-punch.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+		
+		<link href='timeline/index.css' rel='stylesheet' />
+
+		<!-- MODAL -->
+		<link href="modal/modal_styles.css" rel="stylesheet">
+    		<script defer src="modal/modal_script.js"></script>
+
+
+		<!-- TIMELINE FUNCTIONALITY -->
+
+		<script>
+			$(document).ready(function () {
+				if (jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+
+				// console.log(window.name);
+				var sliderStart = moment("01/23/2020").unix();
+				//var sliderEnd = moment().unix();
+				var sliderEnd = moment("03/31/2020").unix();
+				console.log("start:", sliderStart);
+				console.log("end:", sliderEnd);
+
+				$("#slider").slider({
+					min: sliderStart,
+					max: sliderEnd,
+					step: 86400, //24 hrs in unix time, set slider step to 1 day=86400 seconds
+					value: window.name || sliderEnd,
+					slide: function (event, ui) {
+						$("#date").val(moment.unix(ui.value).format('MM/DD/YYYY'));
+						changeDate(ui.value);
+						urlHash = window.location.hash + '/' + ui.value;
+						// console.log(urlHash);
+						// hash.onMapMove();
+					}
+				});
+
+				$("#date").val($("#slider").slider("values", 0));
+
+				$('.footnote').click(function () {
+				$('#footnotediv').toggle('slide');
+				});
+			});
+		</script>
+
+		<script type="text/javascript">
+			// Google Analytics
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-28801666-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function () {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+
+	</head>
+
+	<body>
+
+
+
+		<!-- MAP STYLE-->
+		
+		<style>
+		
+
+				.map {
+						position: absolute;
+						display:block;
+						/*top: 61px;*/
+						top:80px;
+						bottom: 0;
+						width: 100%;
+						border-top: 2px solid #b0691d;
+
+
+
+					}
+			
+				body {
+					overflow: hidden;
+				}
+				
+				body { margin:0; padding:0; }
+	
+				body * {
+				   -webkit-touch-callout: none;
+					 -webkit-user-select: none;
+						-moz-user-select: none;
+						 -ms-user-select: none;
+							 user-select: none;
+				}
+				
+			</style>
+			
+			
+			<!-- HEADER STYLE-->
+	
+			
+			<style>
+			
+				#header { 
+					position:absolute;
+					top:0;
+					
+					bottom: 80px;
+					
+					width:100%;
+					background: #f5f6f7
+					url(body.png)
+					min-width: 100px;
+
+					text-color: #ffffff;
+					text-shadow: #717c9b 0px 1px 3px;
+					font-size: 1.40em;
+
+				}
+	  
+				#link {
+					color: #000000c2;
+					<!-- Other colors: #e0e0e0 #e6e6dc -->
+			
+				}
+				
+			</style>
+	
+			<!-- HEADER ELEMENTS STYLES-->
+			
+			<style>
+				
+				.header a {
+				  float: left;
+				  color: black;
+				  text-align: center;
+				  padding: 10px;
+				  text-decoration: none;
+				  font-size: 15px; 
+				  line-height: 25px;
+				  border-radius: 4px;
+				  border: solid black;
+				  font-weight: bold;
+				  margin-top: 3px;
+					margin: 3px;
+					font-family: "Arial";
+				}
+	
+	
+	
+				.header a:hover {
+				  background-color: #ddd;
+				  color: black;
+				}
+	
+				.header a.active {
+				  background-color: dodgerblue;
+				  color: white;
+				}
+	
+				.header-right {
+				float: right;
+				margin-top: 13px;
+				margin-left: 50px;
+				margin-right: 9px;
+				}
+
+
+				.headerText {
+					display: inline-block;
+					/*margin-top: 15px;*/
+					margin-top: 19px;
+					repeat-x 50% 0;
+					text-shadow: #717c9b 0px 1px 3px;
+					/*font-size: 1.40em;*/
+					font-size: 1.7em;
+					/*Center*/
+					margin-left: 10em;
+					/*Left*/
+					/*margin-left: 2.2em;*/
+
+					margin-left: 10px;
+					font-family: 'Consolas';
+
+
+				}
+
+				.header a.encyclopedia {
+				background-color: #e8e1da;
+				/* color: white; */
+				}
+
+				/*Override styling for logo link*/
+				.header>a:first-child {
+					border: none;
+					margin: 0;
+					padding: 0;
+				}
+				.header>a:first-child:hover {
+					background-color: inherit;
+				}
+
+				</style>
+
+
+				<!-- EXTERNAL LINK ICON STYLE -->
+
+
+				<style>
+				.img2 {
+					vertical-align: text-top;
+					padding-left: 2px;
+				}
+				</style>
+			
+			<!-------------------->
+			<!--ADD HEADER DIV---->
+			<!-------------------->
+			
+			<div class="header">
+			
+			<!--LOGO-->
+			<!--
+				<a href="http://newamsterdamhistorycenter.org" class="logo">
+					<img style="padding: 6px 0px 0px 30px; float: left;"
+						src="http://newamsterdamhistorycenter.org/wp-content/uploads/2018/02/cropped-cropped-sprite-1.png"
+						height="70" align="middle">
+				</a>
+			-->
+			  
+				<div id="header_text" class="headerText">
+					| Coronavirus Map
+				</div>
+				   
+				<div class="header-right">
+					<a class="active" href="#home">Timeline (BETA)</a>
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal">Donate</button>
+					<!--About dialog button, opens modal-->
+					<button class="button" data-modal-target="#modal">About</button>
+				</div>
+	
+			</div>
+
+			<!------------------------------------->
+			<!--CLICK ON ABOUT, OPEN MODAL DIALOG-->
+			<!------------------------------------->
+
+
+			<div class="modal" id="modal">
+				<div class="modal-header">
+					<div class="title">About</div>
+					<button data-close-button class="close-button">&times;</button>
+				</div>
+				<div class="modal-body">
+					While our landscape has been ravaged, with the little left wild scattered, it turns out that wildlife areas
+					can be connected and expanded, and new ones created in a way that is achievable and practical. The land
+					closest to rivers is often the highest value for cores and corridors, and has the lowest land value, with
+					steep slopes, loose ground, and regular flooding.
+
+					As water connects the breadth of land and all life, cores and corridors form the body and veins of wildlife
+					habitats. They would also need the least effort with the most benefit in preventing chemical runoff that has
+					poisoned water and in protecting and restoring precious soil that has been washing away and destroying land.
+					<p>
+						This map is an indispensable for establishing wildlife cores and corridors. It shows colored slopes,
+						floodplains, and cropland that are swiped back and forth for comparison with a satellite photograph that
+						makes the landscape visible at a given point in time.
+
+						It reveal potentials otherwise unseen, with the areas that are most suitable for expansion and creation
+						of core and corridor habitats, and they display or suggest strategic and viable connections between them
+						for wildlife to cross. More easily than ever, people can know where to look, where they would then walk
+						and assess the land in person.
+						<p>
+							<hr>
+							<font size="4.5"> <b>Outline of Map Layers:</b></font>
+
+							<p>
+								<img src="modal/map_elements.jpg" width="100%">
+
+
+
+				</div>
+			</div>
+
+			<div id="overlay"></div>
+
+		<!-- MAP DIV-->
+
+		<div id="map" class="map"></div>
+
+		<!-- BASEMAP SWITHER DIV -->
+
+		<div id="styleSwitcher"></div>
+
+		<!-- TIMELINE PANEL DIV -->
+		
+		<div id='sidepanel'>
+		
+			<div id="content">
+				<h1>Coronavirus Timeline</h1>
+				<hr/>
+				<p class="info" style="text-align:center">
+				Show Coronavirus cases on:
+				<br/> +
+				<input type="text" id="date" size="4" class="y2000" value="" /> +
+				</p>
+				<div id="slider"></div>
+				<br>
+				<nav id="legend"></nav>
+				<div>
+				<span class="footnote">
+						<center>
+						<font size="5">
+						Total Confirmed:
+						<br>
+						<font color="red">1,513,358</font>
+						<p>
+						<font size="4">
+						Active: <font color="orange">1,094,105</font>
+						<br>
+						Deaths: <font color="pink">88,415</font>
+						<br>
+						Recovered: <font color="yellow">329,329</font>
+						</center>
+						</font>
+					</span>
+				</div>
+				</br>
+
+
+
+				<div id="footnotediv" style="display:none">
+
+
+					
+				</div>
+			</div>
+		</div>
+
+		<!-- MAP.JS SOURCE -->
+
+		<script src="timeline/js/map.js"></script>
+
+	</body>
+
+</html>

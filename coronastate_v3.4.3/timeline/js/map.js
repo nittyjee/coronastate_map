@@ -23,12 +23,33 @@ var map = new mapboxgl.Map({
     center: [20, 12],
     zoom: 1.5,
     pitchWithRotate: false,
-	//attributionControl: false
+	attributionControl: false
 });
 // Added the following for hover codes
-var hoveredFeatureId = null;
-var newQueryCount = null;
-var oldQueryCount = null;
+var hoveredFeatureId_adm0 = null;
+var newQueryCount_adm0 = null;
+var oldQueryCount_adm0 = null;
+
+var hoveredFeatureId_static_adm1 = null;
+var newQueryCount_static_adm1 = null;
+var oldQueryCount_static_adm1 = null;
+
+var hoveredFeatureId_adm1_bunch1 = null;
+var newQueryCount_adm1_bunch1 = null;
+var oldQueryCount_adm1_bunch1 = null;
+
+var hoveredFeatureId_adm1_bunch2 = null;
+var newQueryCount_adm1_bunch2 = null;
+var oldQueryCount_adm1_bunch2 = null;
+
+var hoveredFeatureId_adm2 = null;
+var newQueryCount_adm2 = null;
+var oldQueryCount_adm2 = null;
+
+var hoveredFeatureId_adm2_closer = null;
+var newQueryCount_adm2_closer = null;
+var oldQueryCount_adm2_closer = null;
+
 /////////////////////////////
 //ADD NAVIGATION CONTROL (ZOOM IN AND OUT)
 /////////////////////////////
@@ -108,7 +129,7 @@ function changeDate(unixDate) {
 
     map.setFilter("adm2_test_closer", dateFilter);
 
-    map.setFilter("adm3-1aj9ap", dateFilter);
+    map.setFilter("adm3_test", dateFilter);
 
 
 
@@ -191,6 +212,7 @@ map.on('style.load', function() {
     switchStyle();
 //    Initialize the style using the current date
     const today = new Date()
+//    var sliderVal = $("#date").val();
     var sliderVal = today;
     var year = parseInt(moment.unix(moment(sliderVal).unix()).format("YYYY"));
     var date = parseInt(moment.unix(moment(sliderVal).unix()).format("YYYYMMDD"));
@@ -422,12 +444,12 @@ function addLayers(yr, date) {
 //                    ]
 //                },
 
-                "circle-stroke-opacity": {
-                    stops: [
-                        [0, 0],
-                        [3, 1]
-                    ]
-                },
+//                "circle-stroke-opacity": {
+//                    stops: [
+//                        [0, 0],
+//                        [3, 1]
+//                    ]
+//                },
 
 
 //here we implement the 'feature-state' based on the 'hover' property we are setting
@@ -482,7 +504,7 @@ function addLayers(yr, date) {
                 
                 //CIRCLE STROKE COLOR
                 "circle-stroke-color": "#ff0000",
-//
+
 //                "circle-opacity": {
 //                    stops: [
 //                        [2, 0],
@@ -630,15 +652,15 @@ function addLayers(yr, date) {
 
         map.addLayer({
             //ID: CHANGE THIS, 1 OF 3
-            id: "adm3-1aj9ap",
+            id: "adm3_test",
             type: "circle",
             minzoom: 6.5,
             source: {
                 type: "vector",
                 //URL: CHANGE THIS, 2 OF 3
-                url: "mapbox://coronastate.3dagq4o4"
+                url: "mapbox://coronastate.adm3-test"
             },
-            "source-layer": "adm3-1aj9ap",
+            "source-layer": "adm3_test",
             paint: {
 
 
@@ -661,16 +683,16 @@ function addLayers(yr, date) {
                 //CIRCLE STROKE COLOR
                 "circle-stroke-color": "#039900",
 
-//                "circle-opacity": 0.15,
+                "circle-opacity": 0.15,
                   //here we implement the 'feature-state' based on the 'hover' property we are setting
 //we can use the same logic to any paint{} property
 
-                "circle-opacity": [
-				'case',
-				['boolean', ['feature-state', 'hover'], false],
-				0.5,
-				0.15
-				    ],
+//                "circle-opacity": [
+//				'case',
+//				['boolean', ['feature-state', 'hover'], false],
+//				0.5,
+//				0.15
+//				    ],
                 "circle-stroke-width": 1,
             },
             filter: ["all", ["<=", "DayStart", date],
@@ -706,25 +728,56 @@ function addLayers(yr, date) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /////////////////////////
 //HOVER CLICK POPUP
 /////////////////////////
+
+        ///////////////// Create popups ///////////////////////
+
+        // Create a popup, but don't add it to the map yet.
+        var popup_adm0 = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+
+        });
+
+        var popup_static_adm1 = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+        });
+
+        var popup_adm1_bunch1 = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+        });
+
+        var popup_adm1_bunch2 = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+        });
+
+        var popup_adm2 = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+
+        });
+
+        var popup_adm2_closer = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 10
+
+        });
+
+
+
+
+        /////////////// end of create popups
 
         ////////
         //ADM0
@@ -747,18 +800,12 @@ function addLayers(yr, date) {
         });
 
 
-        // Create a popup, but don't add it to the map yet.
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-
         map.on('mouseenter', 'adm0_test', function(e) {
             //if we got a highlighted feature, we remove the hover state
             if (e.features.length > 0) {
-             if (hoveredFeatureId) {
+             if (hoveredFeatureId_adm0) {
               map.setFeatureState(
-              { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId},
+              { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId_adm0},
               { hover: false }
               );
             }
@@ -777,7 +824,7 @@ function addLayers(yr, date) {
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup
+            popup_adm0
                 .setLngLat(coordinates)
 				.setHTML(
 					e.features[0].properties.adm0 +
@@ -796,18 +843,22 @@ function addLayers(yr, date) {
             if(typeof boldFeat !== 'undefined')
             {
         //      console.log(boldFeat.id);
-              hoverpopupShow(e,boldFeat,popup);
+              hoverpopupShow_adm0(e,boldFeat,popup_adm0);
+            }
+            else
+            {
+              popup_adm0.remove();
             }
 
-            if (features.length !== oldQueryCount)
+            if (features.length !== oldQueryCount_adm0)
             {
-                newQueryCount=oldQueryCount;
-                oldQueryCount=features.length;
+                newQueryCount_adm0=oldQueryCount_adm0;
+                oldQueryCount_adm0=features.length;
                 //console.log("Change");
                 //remove old hovered
-                if (hoveredFeatureId) {
+                if (hoveredFeatureId_adm0) {
                     map.setFeatureState(
-                        { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId},
+                        { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId_adm0},
                         { hover: false }
                     );
                 }
@@ -817,7 +868,7 @@ function addLayers(yr, date) {
                 //change hovered to new one
                 if(typeof boldFeat !== 'undefined')
                 {
-                    hoveredFeatureId =  boldFeat.id;
+                    hoveredFeatureId_adm0 =  boldFeat.id;
                     map.setFeatureState(
                     { source: 'adm0_test', sourceLayer: 'adm0_test', id: boldFeat.id},
                     { hover: true }
@@ -832,14 +883,14 @@ function addLayers(yr, date) {
         map.on('mouseleave', 'adm0_test', function() {
             map.getCanvas().style.cursor = '';
 //            popup.remove();
-            if (hoveredFeatureId) {
+            if (hoveredFeatureId_adm0) {
                     map.setFeatureState(
-                    { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId},
+                    { source: 'adm0_test', sourceLayer: 'adm0_test', id: hoveredFeatureId_adm0},
                     { hover: false }
                     );
             }
 
-            hoveredFeatureId =  null;
+            hoveredFeatureId_adm0 =  null;
         });
           //ADM0 CLICK POPUP
         map.on('click', 'adm0_test', function(e) {
@@ -896,35 +947,57 @@ function addLayers(yr, date) {
         }
 
 
-        function hoverpopupShow(e,feature,popup)
+        function hoverpopupShow_adm0(e,feature,popup)
         {
-        popup.remove();
+            popup.remove();
 
-        var placement = e.lngLat;
-        while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
-            placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
+
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm0 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)).addTo(map);
         }
-//        console.log(placement);
 
-        //placement.lat = placement.lat+5;
+        ////////////////////
+        /// Static_adm1
+        ////////////////
 
 
-        popup.setLngLat(placement)
-             .setHTML(
-                    feature.properties.adm0 +
-                    "<br>" +
-                    "Cases: " +
-                    formatNumber(feature.properties.cases)).addTo(map);
-        }
+        map.on('mouseenter', 'static_adm1_test', function() {
+            map.getCanvas().style.cursor = 'pointer';
+        });
 
-        ////////
-        //ADM1 Bunch 1
-        ////////
+        //OFF HOVER
+        map.on('mouseleave', 'static_adm1_test', function() {
+            map.getCanvas().style.cursor = '';
+        });
 
-        //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm1_bunch1_test', function(e) {
+
+
+        map.on('mouseenter', 'static_adm1_test', function(e) {
+            //if we got a highlighted feature, we remove the hover state
+            if (e.features.length > 0) {
+             if (hoveredFeatureId_static_adm1) {
+              map.setFeatureState(
+              { source: 'static_adm1_test', sourceLayer: 'static_adm1_test', id: hoveredFeatureId_static_adm1},
+              { hover: false }
+              );
+            }
+            }
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
             var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
@@ -933,27 +1006,119 @@ function addLayers(yr, date) {
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
 
-            new mapboxgl.Popup()
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup_static_adm1
                 .setLngLat(coordinates)
-
-                //BEFORE MAP POP UP CONTENTS
-                .setHTML(
-                    e.features[0].properties.adm1 +
-                    "<br>" +
-                    e.features[0].properties.adm0 +
-                    "<br>" +
-                    "Cases: " +
-                    formatNumber(e.features[0].properties.cases)
-                )
-
+				.setHTML(
+				    e.features[0].properties.adm1 +
+					"<br>" +
+				    e.features[0].properties.adm0 +
+					"<br>" +
+					"Cases: " +
+					formatNumber(e.features[0].properties.cases)
+				)
                 .addTo(map);
         });
 
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['static_adm1_test']});
+            var boldFeat=overlap_tool(features, e.lngLat);
 
 
-        //CURSOR ON HOVER
+            if(typeof boldFeat !== 'undefined')
+            {
+        //      console.log(boldFeat.id);
+              hoverpopupShow_adm1_static(e,boldFeat,popup_static_adm1);
+            }
+            else
+            {
+              popup_static_adm1.remove();
+            }
 
-        //ON HOVER
+            if (features.length !== oldQueryCount_static_adm1)
+            {
+                newQueryCount_static_adm1=oldQueryCount_static_adm1;
+                oldQueryCount_static_adm1=features.length;
+                //console.log("Change");
+                //remove old hovered
+                if (hoveredFeatureId_static_adm1) {
+                    map.setFeatureState(
+                        { source: 'static_adm1_test', sourceLayer: 'static_adm1_test', id: hoveredFeatureId_static_adm1},
+                        { hover: false }
+                    );
+                }
+
+                //remove popup
+                //popup.remove();
+                //change hovered to new one
+                if(typeof boldFeat !== 'undefined')
+                {
+                    hoveredFeatureId_static_adm1 =  boldFeat.id;
+                    map.setFeatureState(
+                    { source: 'static_adm1_test', sourceLayer: 'static_adm1_test', id: boldFeat.id},
+                    { hover: true }
+                    );
+                //ADD NEW POPUP HERE
+                   //popupShow(e,boldFeat,popup);
+                }
+
+            }
+
+        });
+        map.on('mouseleave', 'static_adm1_test', function() {
+            map.getCanvas().style.cursor = '';
+//            popup.remove();
+            if (hoveredFeatureId_static_adm1) {
+                    map.setFeatureState(
+                    { source: 'static_adm1_test', sourceLayer: 'static_adm1_test', id: hoveredFeatureId_static_adm1},
+                    { hover: false }
+                    );
+            }
+
+            hoveredFeatureId_static_adm1 =  null;
+        });
+          //ADM1_static CLICK POPUP
+        map.on('click', 'static_adm1_test', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['static_adm1_test']});
+	        var boldFeat=overlap_tool(features, e.lngLat);
+        });
+
+
+        function hoverpopupShow_adm1_static(e,feature,popup)
+        {
+            popup.remove();
+
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
+
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm1 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)
+                        ).addTo(map);
+        }
+
+
+
+        ////////////////////
+        /// End of Static_adm1
+        ////////////////
+
+
+          ////////////////////
+        /// adm1_bunch1
+        ////////////////
+
+
         map.on('mouseenter', 'adm1_bunch1_test', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
@@ -965,14 +1130,16 @@ function addLayers(yr, date) {
 
 
 
-
-        // Create a popup, but don't add it to the map yet.
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-
         map.on('mouseenter', 'adm1_bunch1_test', function(e) {
+            //if we got a highlighted feature, we remove the hover state
+            if (e.features.length > 0) {
+             if (hoveredFeatureId_adm1_bunch1) {
+              map.setFeatureState(
+              { source: 'adm1_bunch1_test', sourceLayer: 'adm1_bunch1_test', id: hoveredFeatureId_adm1_bunch1},
+              { hover: false }
+              );
+            }
+            }
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -987,10 +1154,12 @@ function addLayers(yr, date) {
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup
+            popup_adm1_bunch1
                 .setLngLat(coordinates)
 				.setHTML(
-					e.features[0].properties.adm1 +
+				    e.features[0].properties.adm1 +
+					"<br>" +
+				    e.features[0].properties.adm0 +
 					"<br>" +
 					"Cases: " +
 					formatNumber(e.features[0].properties.cases)
@@ -998,50 +1167,105 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm1_bunch1_test', function() {
-            map.getCanvas().style.cursor = '';
-            popup.remove();
-        });
-        
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm1_bunch1_test']});
+            var boldFeat=overlap_tool(features, e.lngLat);
 
 
-        ////////
-        //ADM1 Bunch 2
-        ////////
-
-        //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm1_bunch2_test', function(e) {
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            if(typeof boldFeat !== 'undefined')
+            {
+        //      console.log(boldFeat.id);
+              hoverpopupShow_adm1_bunch1(e,boldFeat,popup_adm1_bunch1);
+            }
+            else
+            {
+              popup_adm1_bunch1.remove();
             }
 
-            new mapboxgl.Popup()
-                .setLngLat(coordinates)
+            if (features.length !== oldQueryCount_adm1_bunch1)
+            {
+                newQueryCount_adm1_bunch1=oldQueryCount_adm1_bunch1;
+                oldQueryCount_adm1_bunch1=features.length;
+                //console.log("Change");
+                //remove old hovered
+                if (hoveredFeatureId_adm1_bunch1) {
+                    map.setFeatureState(
+                        { source: 'adm1_bunch1_test', sourceLayer: 'adm1_bunch1_test', id: hoveredFeatureId_adm1_bunch1},
+                        { hover: false }
+                    );
+                }
 
-                //BEFORE MAP POP UP CONTENTS
-                .setHTML(
-                    e.features[0].properties.adm1 +
-                    "<br>" +
-                    e.features[0].properties.adm0 +
-                    "<br>" +
-                    "Cases: " +
-                    formatNumber(e.features[0].properties.cases)
-                )
+                //remove popup
+                //popup.remove();
+                //change hovered to new one
+                if(typeof boldFeat !== 'undefined')
+                {
+                    hoveredFeatureId_adm1_bunch1 =  boldFeat.id;
+                    map.setFeatureState(
+                    { source: 'adm1_bunch1_test', sourceLayer: 'adm1_bunch1_test', id: boldFeat.id},
+                    { hover: true }
+                    );
+                //ADD NEW POPUP HERE
+                   //popupShow(e,boldFeat,popup);
+                }
 
-                .addTo(map);
+            }
+
+        });
+        map.on('mouseleave', 'adm1_bunch1_test', function() {
+            map.getCanvas().style.cursor = '';
+//            popup.remove();
+            if (hoveredFeatureId_adm1_bunch1) {
+                    map.setFeatureState(
+                    { source: 'adm1_bunch1_test', sourceLayer: 'adm1_bunch1_test', id: hoveredFeatureId_adm1_bunch1},
+                    { hover: false }
+                    );
+            }
+
+            hoveredFeatureId_adm1_bunch1 =  null;
+        });
+          //_adm1_bunch1 CLICK POPUP
+        map.on('click', 'adm1_bunch1_test', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm1_bunch1_test']});
+	        var boldFeat=overlap_tool(features, e.lngLat);
         });
 
 
+        function hoverpopupShow_adm1_bunch1(e,feature,popup)
+        {
+            popup.remove();
 
-        //CURSOR ON HOVER
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
 
-        //ON HOVER
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm1 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)
+                        ).addTo(map);
+        }
+
+
+
+        ////////////////////
+        /// End of _adm1_bunch1
+        ////////////////
+
+
+        
+        ////////////////////
+        /// adm1_bunch2
+        ////////////////
+
+
         map.on('mouseenter', 'adm1_bunch2_test', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
@@ -1053,14 +1277,16 @@ function addLayers(yr, date) {
 
 
 
-
-        // Create a popup, but don't add it to the map yet.
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-
         map.on('mouseenter', 'adm1_bunch2_test', function(e) {
+            //if we got a highlighted feature, we remove the hover state
+            if (e.features.length > 0) {
+             if (hoveredFeatureId_adm1_bunch2) {
+              map.setFeatureState(
+              { source: 'adm1_bunch2_test', sourceLayer: 'adm1_bunch2_test', id: hoveredFeatureId_adm1_bunch2},
+              { hover: false }
+              );
+            }
+            }
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -1075,10 +1301,12 @@ function addLayers(yr, date) {
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup
+            popup_adm1_bunch2
                 .setLngLat(coordinates)
 				.setHTML(
-					e.features[0].properties.adm1 +
+				    e.features[0].properties.adm1 +
+					"<br>" +
+				    e.features[0].properties.adm0 +
 					"<br>" +
 					"Cases: " +
 					formatNumber(e.features[0].properties.cases)
@@ -1086,52 +1314,104 @@ function addLayers(yr, date) {
                 .addTo(map);
         });
 
-        map.on('mouseleave', 'adm1_bunch2_test', function() {
-            map.getCanvas().style.cursor = '';
-            popup.remove();
-        });
-        
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm1_bunch2_test']});
+            var boldFeat=overlap_tool(features, e.lngLat);
 
 
-        ////////
-        //ADM2
-        ////////
-
-        //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm2_test', function(e) {
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            if(typeof boldFeat !== 'undefined')
+            {
+        //      console.log(boldFeat.id);
+              hoverpopupShow_adm1_bunch2(e,boldFeat,popup_adm1_bunch2);
+            }
+            else
+            {
+              popup_adm1_bunch2.remove();
             }
 
-            new mapboxgl.Popup()
-                .setLngLat(coordinates)
+            if (features.length !== oldQueryCount_adm1_bunch2)
+            {
+                newQueryCount_adm1_bunch2=oldQueryCount_adm1_bunch2;
+                oldQueryCount_adm1_bunch2=features.length;
+                //console.log("Change");
+                //remove old hovered
+                if (hoveredFeatureId_adm1_bunch2) {
+                    map.setFeatureState(
+                        { source: 'adm1_bunch2_test', sourceLayer: 'adm1_bunch2_test', id: hoveredFeatureId_adm1_bunch2},
+                        { hover: false }
+                    );
+                }
 
-                //BEFORE MAP POP UP CONTENTS
-                .setHTML(
-                    e.features[0].properties.adm2 +
-                    "<br>" +
-                    e.features[0].properties.adm1 +
-                    "<br>" +
-                    e.features[0].properties.adm0 +
-                    "<br>" +
-                    "Cases: " +
-                    formatNumber(e.features[0].properties.cases)
-                )
+                //remove popup
+                //popup.remove();
+                //change hovered to new one
+                if(typeof boldFeat !== 'undefined')
+                {
+                    hoveredFeatureId_adm1_bunch2 =  boldFeat.id;
+                    map.setFeatureState(
+                    { source: 'adm1_bunch2_test', sourceLayer: 'adm1_bunch2_test', id: boldFeat.id},
+                    { hover: true }
+                    );
+                //ADD NEW POPUP HERE
+                   //popupShow(e,boldFeat,popup);
+                }
 
-                .addTo(map);
+            }
+
+        });
+        map.on('mouseleave', 'adm1_bunch2_test', function() {
+            map.getCanvas().style.cursor = '';
+//            popup.remove();
+            if (hoveredFeatureId_adm1_bunch2) {
+                    map.setFeatureState(
+                    { source: 'adm1_bunch2_test', sourceLayer: 'adm1_bunch2_test', id: hoveredFeatureId_adm1_bunch2},
+                    { hover: false }
+                    );
+            }
+
+            hoveredFeatureId_adm1_bunch2 =  null;
+        });
+          //_adm1_bunch2 CLICK POPUP
+        map.on('click', 'adm1_bunch2_test', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm1_bunch2_test']});
+	        var boldFeat=overlap_tool(features, e.lngLat);
         });
 
 
+        function hoverpopupShow_adm1_bunch2(e,feature,popup)
+        {
+            popup.remove();
 
-        //CURSOR ON HOVER
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
 
-        //ON HOVER
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm1 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)
+                        ).addTo(map);
+        }
+
+
+
+        ////////////////////
+        /// End of _adm1_bunch2
+        ////////////////
+
+
+        /////////////////////////////
+        //ADM2
+        ////////////////////////////////
+
+         //ON HOVER
         map.on('mouseenter', 'adm2_test', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
@@ -1142,15 +1422,16 @@ function addLayers(yr, date) {
         });
 
 
-
-
-        // Create a popup, but don't add it to the map yet.
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-
         map.on('mouseenter', 'adm2_test', function(e) {
+            //if we got a highlighted feature, we remove the hover state
+            if (e.features.length > 0) {
+             if (hoveredFeatureId_adm2) {
+              map.setFeatureState(
+              { source: 'adm2_test', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2},
+              { hover: false }
+              );
+            }
+            }
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -1165,21 +1446,113 @@ function addLayers(yr, date) {
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup
+            popup_adm2
                 .setLngLat(coordinates)
 				.setHTML(
-					e.features[0].properties.adm2 +
-					"<br>" +
+				    e.features[0].properties.adm2 +
+                    "<br>" +
+                    e.features[0].properties.adm1 +
+                    "<br>" +
+                    e.features[0].properties.adm0 +
+                    "<br>" +
 					"Cases: " +
 					formatNumber(e.features[0].properties.cases)
 				)
                 .addTo(map);
         });
 
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm2_test']});
+            var boldFeat=overlap_tool(features, e.lngLat);
+
+
+            if(typeof boldFeat !== 'undefined')
+            {
+        //      console.log(boldFeat.id);
+              hoverpopupShow_adm2(e,boldFeat,popup_adm2);
+            }
+            else
+            {
+              popup_adm2.remove();
+            }
+
+            if (features.length !== oldQueryCount_adm2)
+            {
+                newQueryCount_adm2=oldQueryCount_adm2;
+                oldQueryCount_adm2=features.length;
+                //console.log("Change");
+                //remove old hovered
+                if (hoveredFeatureId_adm2) {
+                    map.setFeatureState(
+                        { source: 'adm2_test', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2},
+                        { hover: false }
+                    );
+                }
+
+                //remove popup
+                //popup.remove();
+                //change hovered to new one
+                if(typeof boldFeat !== 'undefined')
+                {
+                    hoveredFeatureId_adm2 =  boldFeat.id;
+                    map.setFeatureState(
+                    { source: 'adm2_test', sourceLayer: 'adm2_test', id: boldFeat.id},
+                    { hover: true }
+                    );
+                //ADD NEW POPUP HERE
+                   //popupShow(e,boldFeat,popup);
+                }
+
+            }
+
+        });
         map.on('mouseleave', 'adm2_test', function() {
             map.getCanvas().style.cursor = '';
-            popup.remove();
+//            popup.remove();
+            if (hoveredFeatureId_adm2) {
+                    map.setFeatureState(
+                    { source: 'adm2_test', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2},
+                    { hover: false }
+                    );
+            }
+
+            hoveredFeatureId_adm2 =  null;
         });
+          //adm2 CLICK POPUP
+        map.on('click', 'adm2_test', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm2_test']});
+	        var boldFeat=overlap_tool(features, e.lngLat);
+        });
+
+
+
+        function hoverpopupShow_adm2(e,feature,popup)
+        {
+            popup.remove();
+
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
+
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm2 +
+                        "<br>" +
+                        feature.properties.adm1 +
+                        "<br>" +
+                        feature.properties.adm0 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)).addTo(map);
+        }
+
+
+        ////////////////// End of adm2 /////////////////////////
         
 
 
@@ -1187,41 +1560,7 @@ function addLayers(yr, date) {
         //ADM2_Closer
         ////////
 
-        //ADM1_Bunch1 CLICK POPUP
-        map.on('click', 'adm2_test_closer', function(e) {
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
-
-            new mapboxgl.Popup()
-                .setLngLat(coordinates)
-
-                //BEFORE MAP POP UP CONTENTS
-                .setHTML(
-                    e.features[0].properties.adm2 +
-                    "<br>" +
-                    e.features[0].properties.adm1 +
-                    "<br>" +
-                    e.features[0].properties.adm0 +
-                    "<br>" +
-                    "Cases: " +
-                    formatNumber(e.features[0].properties.cases)
-                )
-
-                .addTo(map);
-        });
-
-
-
-        //CURSOR ON HOVER
-
-        //ON HOVER
+         //ON HOVER
         map.on('mouseenter', 'adm2_test_closer', function() {
             map.getCanvas().style.cursor = 'pointer';
         });
@@ -1232,15 +1571,16 @@ function addLayers(yr, date) {
         });
 
 
-
-
-        // Create a popup, but don't add it to the map yet.
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false
-        });
-
         map.on('mouseenter', 'adm2_test_closer', function(e) {
+            //if we got a highlighted feature, we remove the hover state
+            if (e.features.length > 0) {
+             if (hoveredFeatureId_adm2_closer) {
+              map.setFeatureState(
+              { source: 'adm2_test_closer', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2_closer},
+              { hover: false }
+              );
+            }
+            }
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -1255,21 +1595,110 @@ function addLayers(yr, date) {
 
             // Populate the popup and set its coordinates
             // based on the feature found.
-            popup
+            popup_adm2_closer
                 .setLngLat(coordinates)
 				.setHTML(
-					e.features[0].properties.adm2 +
-					"<br>" +
+				    e.features[0].properties.adm2 +
+                    "<br>" +
+                    e.features[0].properties.adm1 +
+                    "<br>" +
+                    e.features[0].properties.adm0 +
+                    "<br>" +
 					"Cases: " +
 					formatNumber(e.features[0].properties.cases)
 				)
                 .addTo(map);
         });
 
+        map.on('mousemove', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm2_test_closer']});
+            var boldFeat=overlap_tool(features, e.lngLat);
+
+
+            if(typeof boldFeat !== 'undefined')
+            {
+        //      console.log(boldFeat.id);
+              hoverpopupShow_adm2_closer(e,boldFeat,popup_adm2_closer);
+            }
+            else
+            {
+              popup_adm2_closer.remove();
+            }
+
+            if (features.length !== oldQueryCount_adm2_closer)
+            {
+                newQueryCount_adm2_closer=oldQueryCount_adm2_closer;
+                oldQueryCount_adm2_closer=features.length;
+                //console.log("Change");
+                //remove old hovered
+                if (hoveredFeatureId_adm2_closer) {
+                    map.setFeatureState(
+                        { source: 'adm2_test_closer', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2_closer},
+                        { hover: false }
+                    );
+                }
+
+                //remove popup
+                //popup.remove();
+                //change hovered to new one
+                if(typeof boldFeat !== 'undefined')
+                {
+                    hoveredFeatureId_adm2_closer =  boldFeat.id;
+                    map.setFeatureState(
+                    { source: 'adm2_test_closer', sourceLayer: 'adm2_test', id: boldFeat.id},
+                    { hover: true }
+                    );
+                //ADD NEW POPUP HERE
+                   //popupShow(e,boldFeat,popup);
+                }
+
+            }
+
+        });
         map.on('mouseleave', 'adm2_test_closer', function() {
             map.getCanvas().style.cursor = '';
+//            popup.remove();
+            if (hoveredFeatureId_adm2_closer) {
+                    map.setFeatureState(
+                    { source: 'adm2_test_closer', sourceLayer: 'adm2_test', id: hoveredFeatureId_adm2_closer},
+                    { hover: false }
+                    );
+            }
+
+            hoveredFeatureId_adm2_closer =  null;
+        });
+          //adm2 CLICK POPUP
+        map.on('click', 'adm2_test_closer', function(e) {
+            var features = map.queryRenderedFeatures(e.point, { layers: ['adm2_test']});
+	        var boldFeat=overlap_tool(features, e.lngLat);
+        });
+
+
+
+        function hoverpopupShow_adm2_closer(e,feature,popup)
+        {
             popup.remove();
-		});
+
+            var placement = e.lngLat;
+            while (Math.abs(e.lngLat.lng - placement[0]) > 180) {
+                placement[0] += e.lngLat.lng > placement[0] ? 360 : -360;
+            }
+            //        console.log(placement);
+
+            //placement.lat = placement.lat+5;
+
+
+            popup.setLngLat(placement)
+                 .setHTML(
+                        feature.properties.adm2 +
+                        "<br>" +
+                        feature.properties.adm1 +
+                        "<br>" +
+                        feature.properties.adm0 +
+                        "<br>" +
+                        "Cases: " +
+                        formatNumber(feature.properties.cases)).addTo(map);
+        }
 	
 	
 
