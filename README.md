@@ -45,6 +45,10 @@ coronastate-v3.4.2
 coronastate-v3.4.3
   - Hima's update
   - Updated hover code on adm0
+ 
+coronastate-v3.4.4
+  - Santiago's update
+  - Santiago made some updates, added a "data" button and a google drive embed for the "about" modal button. So much better
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
