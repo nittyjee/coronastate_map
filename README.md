@@ -49,6 +49,12 @@ coronastate-v3.4.3
 coronastate-v3.4.4
   - Santiago's update
   - Santiago made some updates, added a "data" button and a google drive embed for the "about" modal button. So much better
+coronastate-v3.4.5
+  - Santiago's fix
+  
+coronastate-v3.4.6
+  - Hima's update
+  - 
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
