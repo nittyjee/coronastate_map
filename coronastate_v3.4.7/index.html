@@ -192,17 +192,20 @@
 				<div id="line-plot-id"  class = "line-plot"></div>
 				<div id="inset" class="position-button">
 					<button type="button" class="btn btn-info btn-lg"  data-modal-target="#plotly_modal">
-									<img src="10953068431553668590.svg" width="14" height="14"/>
+									<img src="images/10953068431553668590.svg" width="14" height="14"/>
 					</button>
 				</div>
 			</div>
 			<!--<h4>Confirmed Cases by Country</h4>-->
 			<div id= "viewport" class="viewport"></div>
-			<div id="last_updated_div">
-				    <center>
+			<div id="last_updated_div" class = "last_updated_class">
+				    <p>
+						<center>
 							<font color="black" size="3">Last Updated </font><br>
 					        <font color="black" size="4" id="last_updated_id">5/29/2020 </font>
-					</center>
+						<font color="black" size="4"> GMT </font>
+				</center>
+					</p>
 			</div>
 		</div>
 
@@ -237,7 +240,7 @@
 	 var data_set = {};
 	 var unique_dates = [];
 	 var load_data = [];
-	 var barGraph;
+
 
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -320,7 +323,8 @@
 		  hovertemplate: "%{y:,}"
 		};
 
-		var data = [trace1, trace2, trace3, trace4];
+		var data = [trace1];
+		var data_modal_chart = [trace1, trace2, trace3, trace4];
 
 		var layout = {
 
@@ -332,10 +336,35 @@
 			pad: 0
 		  },
 		  xaxis:{
+		  	fixedrange: true,
 			automargin: true,
+			tickformat: '%b'
 		  },
 		  yaxis: {
-			 //fixedrange: true,
+			 fixedrange: true,
+			 automargin: true,
+			 showticklabels: true
+		  },
+		  showlegend:false,
+<!--		  hovermode: 'x unified'-->
+		};
+
+		var layout_modal_chart = {
+
+		  margin: {
+			l: 25,
+			r: 25,
+			b: 20,
+			t: 0,
+			pad: 0
+		  },
+		  xaxis:{
+<!--		  	fixedrange: true,-->
+			automargin: true
+
+		  },
+		  yaxis: {
+			 fixedrange: true,
 			 automargin: true,
 			 showticklabels: true
 		  },
@@ -344,7 +373,7 @@
 		};
 
 		Plotly.newPlot(graphDiv, data, layout,  {displayModeBar: false});
-	  	Plotly.newPlot(graphDiv2, data, layout,  {displayModeBar: false});
+	  	Plotly.newPlot(graphDiv2, data_modal_chart, layout_modal_chart,  {displayModeBar: false});
 
 
 	});
@@ -441,6 +470,10 @@
 				document.getElementById("deaths_id").innerHTML = formatComma(y_deaths[ind]);
 				document.getElementById("active_id").innerHTML = formatComma(y_active[ind]);
 
+				data_set = getData(unique_dates[ind].key);
+	    		buildTable();
+	    		data_set = {};
+
 
 			},
 			create: function( event, ui ) {
@@ -489,6 +522,7 @@
                 .attr("stroke-width", "2px");
             rowSelection.append("text")
                 .attr("transform", "translate(10,15)")
+                .attr("alignment-baseline", "central")
                 .style('fill', 'red')
                 .style("font-weight", "bold")
                 .style("font-size", "18px");
@@ -505,6 +539,7 @@
 				  .style("fill", "black")
 				  .style("font-weight", 400)
 				  .style("font-size", "18px")
+				  .attr("alignment-baseline", "central")
 				  .text(function(d) {
 					return d.label.split("_")[1]
 				  })
@@ -515,10 +550,10 @@
 
 // Last updated date ====================================================================================
 
-d3.csv("https://raw.githubusercontent.com/nittyjee/coronastate/master/data/report.csv", function(data){
-	console.log(data[0]["last update"])
-	document.getElementById("last_updated_id").innerHTML = data[0]["last update"];
-})
+	d3.csv("https://raw.githubusercontent.com/nittyjee/coronastate/master/data/report.csv", function(data){
+		console.log(data[0]["last update"])
+		document.getElementById("last_updated_id").innerHTML = data[0]["last update"];
+	})
 // ===============================================================================================
 
 

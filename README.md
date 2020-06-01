@@ -54,7 +54,15 @@ coronastate-v3.4.5
   
 coronastate-v3.4.6
   - Hima's update
-  - 
+  - Replace bars with text numbers, like JHU
+  - Show last updated time.
+  
+coronastate-v3.4.7
+  - Hima's update
+  - Click on line graph to expand.
+  - Make changes to small graph.
+  - Updated the table on the left to update with the slider
+  
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
