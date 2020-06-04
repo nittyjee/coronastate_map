@@ -135,7 +135,7 @@
 		<div class="modal" id="plotly_modal">
 			<div align="right"> <button data-close-button class="close-button">&times;</button>
 			</div>
-			<div class="modal1" id="plotly_modal1">
+			<div class="modal-body" id="plotly_modal1">
 				<div id="myDiv" style="width: 100%;"><!-- Plotly chart will be drawn inside this DIV --></div>
 
 			</div>
@@ -275,6 +275,18 @@
 		var trace1 = {
 		  x: x_time,
 		  y: y_confirmed,
+		  name:"",
+		  mode: 'lines',
+		  type: 'scatter',
+		  line: {
+			color: 'red',
+			width: 3
+		  },
+		 hovertemplate: "%{y:,}",
+		};
+		var trace1_modal = {
+		  x: x_time,
+		  y: y_confirmed,
 		  name:"Confirmed",
 		  mode: 'lines',
 		  type: 'scatter',
@@ -324,7 +336,7 @@
 		};
 
 		var data = [trace1];
-		var data_modal_chart = [trace1, trace2, trace3, trace4];
+		var data_modal_chart = [trace1_modal, trace2, trace3, trace4];
 
 		var layout = {
 
@@ -338,7 +350,10 @@
 		  xaxis:{
 		  	fixedrange: true,
 			automargin: true,
-			tickformat: '%b'
+			tickangle: '0',
+			hoverformat: '%Y-%m-%d',
+			tickformat: "%b",
+
 		  },
 		  yaxis: {
 			 fixedrange: true,
@@ -346,7 +361,8 @@
 			 showticklabels: true
 		  },
 		  showlegend:false,
-<!--		  hovermode: 'x unified'-->
+<!--		  hovermode: 'closest'-->
+		  hovermode: 'x unified'
 		};
 
 		var layout_modal_chart = {
@@ -354,13 +370,16 @@
 		  margin: {
 			l: 25,
 			r: 25,
-			b: 20,
+			b: 100,
 			t: 0,
 			pad: 0
 		  },
 		  xaxis:{
 <!--		  	fixedrange: true,-->
-			automargin: true
+<!--			automargin: true-->
+				hoverformat: '%Y-%m-%d',
+				tickformat: "%b %e"
+
 
 		  },
 		  yaxis: {
@@ -373,7 +392,11 @@
 		};
 
 		Plotly.newPlot(graphDiv, data, layout,  {displayModeBar: false});
-	  	Plotly.newPlot(graphDiv2, data_modal_chart, layout_modal_chart,  {displayModeBar: false});
+	  	Plotly.react(graphDiv2, data_modal_chart, layout_modal_chart,  {displayModeBar: false});
+
+<!--	  	graphDiv.on('plotly_hover', function(data){-->
+<!--  			dragLayer.style.cursor = ''-->
+<!--		});-->
 
 
 	});

@@ -63,6 +63,11 @@ coronastate-v3.4.7
   - Make changes to small graph.
   - Updated the table on the left to update with the slider
   
+v3.4.8
+  - HIma's update
+  - Delete map_elements.jpg file
+  - Enabled selection of text
+  
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
