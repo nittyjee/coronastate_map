@@ -1,5 +1,10 @@
 # Coronastate Map
 
+CoronaState Map: http://coronastate.org/
+
+CoronaState Data: https://github.com/nittyjee/coronastateCoronaState
+
+
 Changes made
 1. to index.html (on 5/1/2020)
 * Added d3.js script
