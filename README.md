@@ -2,7 +2,7 @@
 
 CoronaState Map: http://coronastate.org/
 
-CoronaState Data: https://github.com/nittyjee/coronastateCoronaState
+CoronaState Data: https://github.com/nittyjee/coronastate
 
 
 Changes made
