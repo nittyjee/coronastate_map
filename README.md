@@ -67,7 +67,14 @@ v3.4.8
   - HIma's update
   - Delete map_elements.jpg file
   - Enabled selection of text
+
+v3.5
+  - Nitin's update
+  - Created a new version that adjusts zoom levels and has hovering.
   
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
+
+http://jsfiddle.net/t95x2df7/
+
