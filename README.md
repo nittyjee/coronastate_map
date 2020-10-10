@@ -47,7 +47,7 @@ v3.5
   
 v4.0
   - Hima's update
-  - Updating the code to reduce the use of mapbox tilesets.
+  - Testing this code with mapbox join
   
 To do
 -----
