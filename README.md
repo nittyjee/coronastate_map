@@ -45,6 +45,10 @@ v3.5
   - Nitin's update
   - Created a new version that adjusts zoom levels and has hovering.
   
+v4.0
+  - Hima's update
+  - Updating the code to reduce the use of mapbox tilesets.
+  
 To do
 -----
 1. Replace the csv aggregate used in index.html from JHU to coronastate's data aggregate
